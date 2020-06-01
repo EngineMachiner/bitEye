@@ -1,57 +1,61 @@
-local tbl = {}
+
 local ScaleVar = _screen.h/480
+
+local dir
 
 local function CheckSprites(self)
 
-	local s = tostring(self)
+		local s = tostring(self)
 
-	self:effectclock("timer")
-	self:set_tween_uses_effect_delta(false)
+		self:effectclock("timer")
+		self:set_tween_uses_effect_delta(false)
 
-	if string.match(s,"Sprite") then
-		self:set_use_effect_clock_for_texcoords(false)
-	else
-		self:RunCommandsOnChildren( function(child)
-			CheckSprites(child)
-		end )
-	end
+		if string.match(s,"Sprite") then
+			self:set_use_effect_clock_for_texcoords(false)
+		elseif string.match(s,"ActorFrame") and self:GetChildren() then
+			self:RunCommandsOnChildren( function(child)
+				CheckSprites(child)
+			end )
+		end
 
 end
 
 local function RefreshBGA_RM(self)
-
+	
 	if SCREENMAN:GetTopScreen():GetName() == "ScreenMiniMenuBackgroundChange" then
 
 		local pn = 'PlayerNumber_P1'
 		local screen = SCREENMAN:GetTopScreen()
 		local index = screen:GetCurrentRowIndex(pn)
 		local row = screen:GetOptionRow(index)
-		local name = row:GetName()
 		local choice = row:GetChoiceInRowWithFocus(pn)
 
-		if SCREENMAN:GetTopScreen():GetCurrentRowIndex('PlayerNumber_P1') == 10 then
+		if index == 10 then
 			--SCREENMAN:SystemMessage( FILEMAN:GetDirListing("/BGAnimations/", true, true)[tonumber(choice) + 1] )
-			tbl["dir"] = FILEMAN:GetDirListing("/BGAnimations/", true, true)[tonumber(choice) + 1]
+			dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)[tonumber(choice) + 1]
 			self:RemoveAllChildren()
-			self:AddChildFromPath(tbl["dir"].."/default.lua")
-			self:AddChildFromPath("/BGAnimations/Scripts/BG_RM_Content.lua")
-			self:diffusealpha(1)
-			self:xy( SCREEN_WIDTH - 640 * 0.25 * 0.5 * 3 * 0.8 * ScaleVar ,
-				 480 * 0.25 * 0.5 * 0.25 * ScaleVar )
-			self:zoom(0.25*0.5)
+			self:AddChildFromPath(dir.."/default.lua")
+			self:AddChildFromPath("BGA-RM-Screen.lua")
 			self:RunCommandsOnChildren(function(child)
-				child:playcommand("On"):playcommand("GainFocus")
+				child:finishtweening():stopeffect()
+				child:playcommand("GainFocus"):playcommand("On")
 				child:effectclock("timer")
 				child:set_tween_uses_effect_delta(false)
+				child:zoom(0.25*0.5)
+				child:x( self:GetX() + SCREEN_WIDTH * 0.575 )
+				child:y( self:GetY() + SCREEN_HEIGHT * 0.25 * 0.25 )
 				CheckSprites(child)
 			end)
-		elseif SCREENMAN:GetTopScreen():GetCurrentRowIndex('PlayerNumber_P1') == 11 then 
-			tbl["dir"] = FILEMAN:GetDirListing("/RandomMovies/")[tonumber(choice) + 1]
+		elseif index == 11 then 
+			dir = FILEMAN:GetDirListing("/RandomMovies/")[tonumber(choice) + 1]
 			self:RemoveAllChildren()
-				:AddChildFromPath("/RandomMovies/"..tbl["dir"])
-			self:xy( SCREEN_WIDTH - 304 * 0.5 * ScaleVar , ( 176 + 25 ) * 0.5 * ScaleVar )
-			self:diffusealpha(1)
-			self:zoom( ScaleVar )
+			self:AddChildFromPath("/RandomMovies/"..dir)
+			self:AddChildFromPath("BGA-RM-Screen.lua")
+			self:RunCommandsOnChildren(function(child)
+				child:zoomto( 640 * 0.25 * 0.5, 480 * 0.25 * 0.5 )
+				child:x( SCREEN_WIDTH * 0.625 )
+				child:y( SCREEN_HEIGHT * 0.25 * 0.5 )
+			end)
 		end
 
 	end
