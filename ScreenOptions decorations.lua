@@ -7,6 +7,11 @@ return Def.ActorFrame{
 			else
 				self:visible(true)
 			end
+		end,
+		OffCommand=function(self)
+			self:RunCommandsOnChildren( function(child)
+				child:finishtweening()
+			end )
 		end
 	}
 }
