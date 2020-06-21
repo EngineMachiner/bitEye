@@ -6,13 +6,9 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:diffuse(Color.Green)
 			self:diffusealpha(0.5)
-			if SCREENMAN:GetTopScreen():GetCurrentRowIndex('PlayerNumber_P1') == 10 then
-				self:Center():x( self:GetX() - SCREEN_WIDTH )
-				self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
-				self:cropleft(0.5)
-			else
-				self:diffusealpha(0)
-			end
+			self:Center():x( self:GetX() - SCREEN_WIDTH )
+			self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
+			self:cropleft(0.5)
 		end
 	},
 
@@ -20,10 +16,8 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:diffuse(Color.Black)
 			self:diffusealpha(0.5)
-			if SCREENMAN:GetTopScreen():GetCurrentRowIndex('PlayerNumber_P1') == 10 then
-				self:Center()
-				self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
-			end
+			self:Center()
+			self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
 		end
 	},
 
@@ -31,13 +25,9 @@ return Def.ActorFrame{
 		OnCommand=function(self)
 			self:diffuse(Color.Green)
 			self:diffusealpha(0.5)
-			if SCREENMAN:GetTopScreen():GetCurrentRowIndex('PlayerNumber_P1') == 10 then
-				self:Center():x( self:GetX() + SCREEN_WIDTH )
-				self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
-				self:cropright(0.5)
-			else
-				self:diffusealpha(0)
-			end
+			self:Center():x( self:GetX() + SCREEN_WIDTH )
+			self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
+			self:cropright(0.5)
 		end
 	}
 

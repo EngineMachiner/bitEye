@@ -35,27 +35,42 @@ local function RefreshBGA_RM(self)
 			dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)[tonumber(choice) + 1]
 			self:RemoveAllChildren()
 			self:AddChildFromPath(dir.."/default.lua")
-			self:AddChildFromPath("BGA-RM-Screen.lua")
+			self:AddChildFromPath("/Appearance/Themes/_fallback/BGAnimations/BGA-RM-Screen.lua")
 			self:RunCommandsOnChildren(function(child)
 				child:finishtweening():stopeffect()
 				child:playcommand("GainFocus"):playcommand("On")
 				child:effectclock("timer")
 				child:set_tween_uses_effect_delta(false)
-				child:zoom(0.25*0.5)
-				child:x( self:GetX() + SCREEN_WIDTH * 0.575 )
-				child:y( self:GetY() + SCREEN_HEIGHT * 0.25 * 0.25 )
+				child:zoom(0.125)
+				child:x( SCREEN_WIDTH * ( - 0.0625 + 0.5 ) )
+				child:y( SCREEN_HEIGHT * ( - 0.0625 * 1.5 + 0.125 ) )
 				CheckSprites(child)
 			end)
-		elseif index == 11 then 
-			dir = FILEMAN:GetDirListing("/RandomMovies/")[tonumber(choice) + 1]
-			self:RemoveAllChildren()
-			self:AddChildFromPath("/RandomMovies/"..dir)
-			self:AddChildFromPath("BGA-RM-Screen.lua")
-			self:RunCommandsOnChildren(function(child)
-				child:zoomto( 640 * 0.25 * 0.5, 480 * 0.25 * 0.5 )
-				child:x( SCREEN_WIDTH * 0.625 )
-				child:y( SCREEN_HEIGHT * 0.25 * 0.5 )
-			end)
+		else
+			local tbl = { 11, 12, 13 }
+			for i=1,#tbl do
+				if index == tbl[i] then 
+					dir = FILEMAN:GetDirListing("/RandomMovies/")[tonumber(choice) + 1]
+					self:RemoveAllChildren()
+					self:AddChildFromPath("/RandomMovies/"..dir)
+					self:RunCommandsOnChildren(function(child)
+						child.Name = "MovieActor"
+						child:Center()
+						child:scale_or_crop_background()
+						child:zoom( child:GetZoom() * 0.125 )
+						child:y( child:GetY() - SCREEN_HEIGHT * 0.5 + child:GetZoomedHeight() * ( 0.5 + 0.125 ) )
+					end)
+					self:AddChildFromPath("/Appearance/Themes/_fallback/BGAnimations/BGA-RM-Screen.lua")
+					self:RunCommandsOnChildren(function(child)
+						if child.Name ~= "MovieActor" then
+							child:playcommand("On")
+							child:zoom(0.125)
+							child:x( SCREEN_WIDTH * ( - 0.0625 + 0.5 ) )
+							child:y( SCREEN_HEIGHT * ( - 0.0625 * 1.5 + 0.125 ) )
+						end
+					end)
+				end
+			end
 		end
 
 	end
