@@ -92,7 +92,7 @@ local copy
 	t[#t+1] = Def.BitmapText{
 		Font="Common normal",
 		OnCommand=function(self)
-
+		
 			if not copy then 
 				copy = s
 				self:maxwidth(self:GetParent():GetChild("Block00"):GetZoomedWidth())

@@ -2,6 +2,7 @@
 local pn, screen, index, row, choice = 'PlayerNumber_P1'
 
 local dir, show
+
 local function PopPreview(event)
 	if event["DeviceInput"].down then
 		if string.match(event["DeviceInput"].button, "_left alt" ) then
@@ -47,8 +48,7 @@ local t = Def.ActorFrame{
 	end,
 
 	UpdateCommand=function(self)
-		if show
-		and SCREENMAN:GetTopScreen():GetName() == "ScreenMiniMenuBackgroundChange" then
+		if show then
 			self:diffusealpha(1)
 		else
 			self:diffusealpha(0)
@@ -88,16 +88,15 @@ local function RefreshBGA_RM(self)
 	self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-SF.lua")
 	self:RunCommandsOnChildren( function(child)
 		child.Name = "SF"
-		child:playcommand("On")
-	end )
+	end)
 
 	if check then 
 		self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
 		self:RunCommandsOnChildren( function(child)
 			if not child.Name then 
-				child.Name = "BG"
+				child.Name = "BG" 
 			end
-		end )
+		end)
 	end
 
 	if index == 10 then
@@ -126,14 +125,18 @@ local function RefreshBGA_RM(self)
 	end
 
 	self:RunCommandsOnChildren( function(child)
-		if not child.Name then
-			Resize(child)
-		elseif child.Name == "Movie" then
+		if child.Name == "Movie" then
 			child:stoptweening():stopeffect()
 			child:Center()
 			child:scale_or_crop_background()
 			child:zoom( child:GetZoom() * 0.125 )
-			child:y( child:GetY() - SCREEN_HEIGHT * 0.406725 )		
+			child:y( child:GetY() - SCREEN_HEIGHT * 0.406725 )	
+		else
+			if child.Name == "SF" then
+				child:playcommand("On")
+			else
+				Resize(child)
+			end
 		end
 	end )
 
