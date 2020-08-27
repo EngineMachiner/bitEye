@@ -19,7 +19,7 @@ end
 local scroll = { 1, 1.5, 2, 3, 4, 6, 8 }
 local s_key, show, show_2 = 1
 local val, val_2, val_3
-local count = 0
+local count, count_2 = 0, 0
 
 local function KeyTrigger(event)
 
@@ -27,17 +27,35 @@ local function KeyTrigger(event)
 	if event["DeviceInput"].down then
 
 		local function ButtonMachine( s_butt, value )
+
 			local v = value
+
 			if string.match(event["DeviceInput"].button, s_butt ) then
+
 				if not v then
 					v = true
 				else
 					v = false
 				end
-				return v
+
+				if s_butt == "_up"
+				or s_butt == "_down" then 
+					count_2 = count_2 + 1
+					if count_2 <= 2 then
+						return true
+					else
+						return false
+					end
+				else
+					return v
+				end
+
 			else
+
 				return value
+
 			end
+
 		end
 
 		show = ButtonMachine( "_left alt", show )
@@ -78,7 +96,7 @@ local function KeyTrigger(event)
 
 	else
 		val = false
-		count = 0
+		count, count_2 = 0, 0
 	end
 
 end
@@ -222,7 +240,7 @@ return Def.ActorFrame{
 			show_2 = false
 		end
 
-		if not show then
+		if not show or count_2 >= 3 then
 			self:RemoveAllChildren()
 		end
 
