@@ -85,10 +85,10 @@ end
 
 local function SearchFiles(dir, tbl)
 	for m=1,#dir do
-		local s = dir[m]
-		if string.match( s, "/" .. tbl["file1"]  ) then
+		if string.match( dir[m], "/" .. tbl["file1"]  ) then
 			return true
-		elseif m == #dir then 
+		end
+		if m == #dir then 
 			return false
 		end
 	end
@@ -125,8 +125,8 @@ end
 
 
 local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
-local RM_dir = FILEMAN:GetDirListing("/RandomMovies/", false, false)
-local Song_dir = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir(), false, false)
+local RM_dir = FILEMAN:GetDirListing("/RandomMovies/", false, true)
+local Song_dir = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir(), false, true)
 
 local function AddBGChangesPreviews(self)
 
@@ -142,46 +142,61 @@ local function AddBGChangesPreviews(self)
 
 			if temp["start_beat"] >= GAMESTATE:GetSongBeat() - 2 * scroll[s_key]
 			and temp["start_beat"] < GAMESTATE:GetSongBeat() + 13 * scroll[s_key] then
+				
+				if SearchFiles(BGA_dir,temp)
+				or SearchFiles(RM_dir,temp)
+				or SearchFiles(Song_dir,temp) then
 
-				if not string.match( temp["file1"], ".%p%a%a%a" )
-				and SearchFiles(BGA_dir,temp) then
-
-					self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
-					self:AddChildFromPath("/BGAnimations/"..temp["file1"].."/default.lua")
-					self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
-
-					self:RunCommandsOnChildren(function(child)
-						BGA_Init(child, temp)
-					end)
-
-				elseif string.match( temp["file1"], ".%p%a%a%a" ) then 
-
-					local path 
-					if SearchFiles(RM_dir,temp) then
-						path = "/RandomMovies/"
-					elseif SearchFiles(Song_dir,temp) then 
-						path = GAMESTATE:GetCurrentSong():GetSongDir()
-					end
-					
-					if path then
+					if not string.match( temp["file1"], ".%p%a%a%a" )
+					and SearchFiles(BGA_dir,temp) then
 
 						self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
-						ChildNaming(self, "BG")
-
-						self:AddChildFromPath(path..temp["file1"])
-						ChildNaming(self, "Movie")
-
+						self:AddChildFromPath("/BGAnimations/"..temp["file1"].."/default.lua")
 						self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
 
 						self:RunCommandsOnChildren(function(child)
-							if child.Name == "Movie" then
-								Movies_Init(child, temp)
-							else
-								BGA_Init(child, temp)
-							end
+							BGA_Init(child, temp)
 						end)
 
+					elseif string.match( temp["file1"], ".%p%a%a%a" ) then 
+
+						local path 
+						if SearchFiles(RM_dir,temp) then
+							path = "/RandomMovies/"
+						elseif SearchFiles(Song_dir,temp) then 
+							path = GAMESTATE:GetCurrentSong():GetSongDir()
+						end
+					
+						if path then
+
+							self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
+							ChildNaming(self, "BG")
+
+							self:AddChildFromPath(path..temp["file1"]) --only videos
+							ChildNaming(self, "Movie")
+
+							self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
+
+							self:RunCommandsOnChildren(function(child)
+								if child.Name == "Movie" then
+									Movies_Init(child, temp)
+								else
+									BGA_Init(child, temp)
+								end
+							end)
+
+						end
+
 					end
+
+				else
+
+					self:AddChildFromPath("/Scripts/_editmode-tool/BGA-MissingInfo.lua")
+					self:RunCommandsOnChildren(function(child)
+						if not child.Name then
+							BGA_Init(child, temp)
+						end
+					end)
 
 				end
 
@@ -193,7 +208,6 @@ local function AddBGChangesPreviews(self)
 
 end
 
-local lock
 return Def.ActorFrame{
 
 	OnCommand=function(self)
@@ -212,7 +226,7 @@ return Def.ActorFrame{
 			self:RemoveAllChildren()
 		end
 
-		if not string.match( tostring(SCREENMAN:GetTopScreen()), "ScreenEdit" ) then 
+		if not string.match( tostring(SCREENMAN:GetTopScreen()), "ScreenEdit" ) then
 			show = false
 		end
 
