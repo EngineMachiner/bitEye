@@ -6,7 +6,6 @@ local count = 0
 
 local function PopPreview(event)
 
-	SCREENMAN:SystemMessage(count)
 	if event["DeviceInput"].down then
 
 		if string.match(event["DeviceInput"].button, "_left alt" ) then
