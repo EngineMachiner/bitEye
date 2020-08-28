@@ -2,9 +2,13 @@
 local pn, screen, index, row, choice = 'PlayerNumber_P1'
 
 local dir, show
+local count = 0
 
 local function PopPreview(event)
+
+	SCREENMAN:SystemMessage(count)
 	if event["DeviceInput"].down then
+
 		if string.match(event["DeviceInput"].button, "_left alt" ) then
 			if not show then
 				show = true
@@ -12,7 +16,17 @@ local function PopPreview(event)
 				show = false
 			end
 		end
+
+		if show 
+		and ( string.match(event["DeviceInput"].button, "_left" )
+		or string.match(event["DeviceInput"].button, "_right" ) ) then
+			count = count + 1
+		end
+
+	else
+		count = 0
 	end
+
 end
 
 local function CheckSprites(self)
@@ -151,14 +165,18 @@ end
 	end
 
 	t.MenuLeftP1MessageCommand=function(self)
-		if show then
+		if show and count <= 3 then
 			RefreshBGA_RM(self)
+		else
+			self:RemoveAllChildren()
 		end
 	end
 
 	t.MenuRightP1MessageCommand=function(self)
-		if show then
+		if show and count <= 3 then
 			RefreshBGA_RM(self)
+		else
+			self:RemoveAllChildren()
 		end
 	end
 
