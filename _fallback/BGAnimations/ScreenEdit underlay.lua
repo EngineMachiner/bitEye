@@ -1,4 +1,6 @@
 
+local ScaleVar = SCREEN_HEIGHT/480
+
 local function CheckSprites(self)
 
 		local s = tostring(self)
@@ -127,7 +129,8 @@ local function Movies_Init(self, tbl)
 	self:scale_or_crop_background()
 	self:x( SCREEN_CENTER_X + SCREEN_WIDTH * 0.22 )
 	self:zoom( self:GetZoom() * 0.0625 )
-	self:y( 90 + 48 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
+	self:y( 60 + 32 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
+	self:y( self:GetY() * ScaleVar )
 end
 
 local function BGA_Init(self, tbl)
@@ -137,7 +140,8 @@ local function BGA_Init(self, tbl)
 		CheckSprites(self)
 		self:zoom(0.0625)
 		self:x( SCREEN_CENTER_X + SCREEN_WIDTH * 0.1875 )
-		self:y( 66 + 48 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
+		self:y( 44 + 32 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
+		self:y( self:GetY() * ScaleVar )
 	end
 end
 
