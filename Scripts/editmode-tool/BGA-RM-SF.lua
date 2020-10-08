@@ -1,6 +1,7 @@
 
 local t = Def.ActorFrame{}
 
+local r = {}
 local s, caps, option, confirm = ""
 
 local function LeftShift(event)
@@ -22,11 +23,14 @@ local function LeftShift(event)
 
 		if string.match(event["DeviceInput"].button, "KP enter" )
 		and confirm then
-			local pn = 'PlayerNumber_P1'
-			local screen = SCREENMAN:GetTopScreen()
-			local index = screen:GetCurrentRowIndex(pn)
-			local row = screen:GetOptionRow(index)
-			local choice = row:GetChoiceInRowWithFocus(pn)
+			if #r == 1 then
+				local pn = 'PlayerNumber_P1'
+				local screen = SCREENMAN:GetTopScreen()
+				local index = screen:GetCurrentRowIndex(pn)
+				local row = screen:GetOptionRow(index)
+				local choice = row:GetChoiceInRowWithFocus(pn)
+				row:SetChoiceInRowWithFocus(pn,r[1][1]-1)
+			end
 		end
 
 	else
@@ -115,7 +119,7 @@ local copy
 		end
 	}
 
-local r, dir, lim = {}
+local dir, lim
 
 	t[#t+1] = Def.BitmapText{
 		Font="Common normal",
@@ -128,8 +132,12 @@ local r, dir, lim = {}
 				r = {}
 
 				for i=1,#dir do
+					if dir[i] == s then
+						r[#r+1] = { i, dir[i] }
+					break
+					end
 					if string.match( dir[i], s ) then 
-						r[#r+1] = dir[i]
+						r[#r+1] = { i, dir[i] }
 					end
 				end
 

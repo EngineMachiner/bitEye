@@ -172,9 +172,9 @@ local function AddBGChangesPreviews(self)
 					if not string.match( temp["file1"], ".%p%a%a%a" )
 					and SearchFiles(BGA_dir,temp) then
 
-						self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
+						self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-BG.lua")
 						self:AddChildFromPath("/BGAnimations/"..temp["file1"].."/default.lua")
-						self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
+						self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-Front.lua")
 
 						self:RunCommandsOnChildren(function(child)
 							BGA_Init(child, temp)
@@ -191,13 +191,13 @@ local function AddBGChangesPreviews(self)
 					
 						if path then
 
-							self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
+							self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-BG.lua")
 							ChildNaming(self, "BG")
 
 							self:AddChildFromPath(path..temp["file1"]) --only videos
 							ChildNaming(self, "Movie")
 
-							self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
+							self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-Front.lua")
 
 							self:RunCommandsOnChildren(function(child)
 								if child.Name == "Movie" then
@@ -213,7 +213,7 @@ local function AddBGChangesPreviews(self)
 
 				else
 
-					self:AddChildFromPath("/Scripts/_editmode-tool/BGA-MissingInfo.lua")
+					self:AddChildFromPath("/Scripts/editmode-tool/BGA-MissingInfo.lua")
 					self:RunCommandsOnChildren(function(child)
 						if not child.Name then
 							BGA_Init(child, temp)

@@ -98,13 +98,13 @@ local function RefreshBGA_RM(self)
 		end
 	end
 
-	self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-SF.lua")
+	self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-SF.lua")
 	self:RunCommandsOnChildren( function(child)
 		child.Name = "SF"
 	end)
 
 	if check then 
-		self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-BG.lua")
+		self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-BG.lua")
 		self:RunCommandsOnChildren( function(child)
 			if not child.Name then 
 				child.Name = "BG" 
@@ -134,7 +134,7 @@ local function RefreshBGA_RM(self)
 	end
 
 	if check then
-		self:AddChildFromPath("/Scripts/_editmode-tool/BGA-RM-Front.lua")
+		self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-Front.lua")
 	end
 
 	self:RunCommandsOnChildren( function(child)
