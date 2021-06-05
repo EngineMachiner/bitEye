@@ -1,5 +1,5 @@
 
-local ScaleVar = SCREEN_HEIGHT/480
+local scl = SCREEN_HEIGHT/480
 
 local function CheckSprites(self)
 
@@ -8,9 +8,9 @@ local function CheckSprites(self)
 		self:effectclock("timer")
 		self:set_tween_uses_effect_delta(false)
 
-		if string.match(s,"Sprite") then
+		if s:match("Sprite") then
 			self:set_use_effect_clock_for_texcoords(false)
-		elseif string.match(s,"ActorFrame") and self:GetChildren() then
+		elseif s:match("ActorFrame") and self:GetChildren() then
 			self:RunCommandsOnChildren( function(child)
 				CheckSprites(child)
 			end )
@@ -19,93 +19,11 @@ local function CheckSprites(self)
 end
 
 local scroll = { 1, 1.5, 2, 3, 4, 6, 8 }
-local s_key, show, show_2 = 1
-local val, val_2, val_3
-local count, count_2 = 0, 0
-
-local function KeyTrigger(event)
-
-	val_2, val_3 = false
-	if event["DeviceInput"].down then
-
-		local function ButtonMachine( s_butt, value )
-
-			local v = value
-
-			if string.match(event["DeviceInput"].button, s_butt ) then
-
-				if not v then
-					v = true
-				else
-					v = false
-				end
-
-				if s_butt == "_up"
-				or s_butt == "_down" then 
-					count_2 = count_2 + 1
-					if count_2 <= 2 then
-						return true
-					else
-						return false
-					end
-				else
-					return v
-				end
-
-			else
-
-				return value
-
-			end
-
-		end
-
-		show = ButtonMachine( "_left alt", show )
-		show_2 = ButtonMachine( "_up", show_2 )
-		show_2 = ButtonMachine( "_down", show_2 )
-
-		if string.match(event["DeviceInput"].button, "_left ctrl" ) then
-			val_2, val_3 = false
-			val = true
-			count = count + 1
-		end
-
-		if string.match(event["DeviceInput"].button, "_up" ) and val then
-			val_2 = true
-			val_3 = false
-		end
-
-		if string.match(event["DeviceInput"].button, "_down" ) and val then
-			val_3 = true
-			val_2 = false
-		end
-
-		if val then
-			if count <= 3 then
-				if val_2
-				and s_key < 7 then 
-					s_key = s_key + 1
-					val, val_2, val_3 = false
-				elseif val_3
-				and s_key > 1 then 
-					s_key = s_key - 1
-					val, val_2, val_3 = false
-				end
-			else
-				count = 0
-			end
-		end
-
-	else
-		val = false
-		count, count_2 = 0, 0
-	end
-
-end
+local s_key = 1
 
 local function SearchFiles(dir, tbl)
 	for m=1,#dir do
-		if string.match( dir[m], "/" .. tbl["file1"]  ) then
+		if dir[m]:match("/" .. tbl["file1"]) then
 			return true
 		end
 		if m == #dir then 
@@ -130,29 +48,29 @@ local function Movies_Init(self, tbl)
 	self:x( SCREEN_CENTER_X + SCREEN_WIDTH * 0.22 )
 	self:zoom( self:GetZoom() * 0.0625 )
 	self:y( 60 + 32 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
-	self:y( self:GetY() * ScaleVar )
+	self:y( self:GetY() * scl )
 end
 
 local function BGA_Init(self, tbl)
 	if not self.Name then
 		self.Name = tbl["start_beat"]
-		self:playcommand("GainFocus"):playcommand("On")
-		CheckSprites(self)
+		self:stoptweening():stopeffect()
 		self:zoom(0.0625)
 		self:x( SCREEN_CENTER_X + SCREEN_WIDTH * 0.1875 )
 		self:y( 44 + 32 * ( tbl["start_beat"] - GAMESTATE:GetSongBeat() ) * scroll[s_key] )
-		self:y( self:GetY() * ScaleVar )
+		self:y( self:GetY() * scl )
+		self:playcommand("GainFocus"):playcommand("On")
+		CheckSprites(self)
 	end
 end
-
-
-local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
-local RM_dir = FILEMAN:GetDirListing("/RandomMovies/", false, true)
-local Song_dir = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir(), false, true)
 
 local function AddBGChangesPreviews(self)
 
 	self:RemoveAllChildren()
+
+	local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
+	local RM_dir = FILEMAN:GetDirListing("/RandomMovies/", false, true)
+	local Song_dir = FILEMAN:GetDirListing(GAMESTATE:GetCurrentSong():GetSongDir(), false, true)
 
 	local BGChanges = GAMESTATE:GetCurrentSong():GetBGChanges()
 
@@ -169,7 +87,7 @@ local function AddBGChangesPreviews(self)
 				or SearchFiles(RM_dir,temp)
 				or SearchFiles(Song_dir,temp) then
 
-					if not string.match( temp["file1"], ".%p%a%a%a" )
+					if not temp["file1"]:match( ".%p%a%a%a" )
 					and SearchFiles(BGA_dir,temp) then
 
 						self:AddChildFromPath("/Scripts/editmode-tool/BGA-RM-BG.lua")
@@ -180,7 +98,7 @@ local function AddBGChangesPreviews(self)
 							BGA_Init(child, temp)
 						end)
 
-					elseif string.match( temp["file1"], ".%p%a%a%a" ) then 
+					elseif temp["file1"]:match( ".%p%a%a%a" ) then 
 
 						local path 
 						if SearchFiles(RM_dir,temp) then
@@ -233,27 +151,114 @@ end
 return Def.ActorFrame{
 
 	OnCommand=function(self)
-		SCREENMAN:GetTopScreen():AddInputCallback( KeyTrigger )
-		self:playcommand("Update")
-	end,
 
-	UpdateCommand=function(self)
+		local val, show, show_2
+		local count, count_2 = 0, 0
+		self.Time = 0
+
+		local function KeyTrigger(event)
+
+			local val_2, val_3 = false
+			if event["DeviceInput"].down then
 		
-		if show_2 and show then
-			AddBGChangesPreviews(self)
-			show_2 = false
+				local b = event["DeviceInput"].button
+				local function ButtonMachine( s_butt, value )
+		
+					local v = value
+		
+					if b:match( s_butt ) then
+		
+						if not v then
+							v = true
+						else
+							v = false
+						end
+		
+						--[[
+						if s_butt == "_up"
+						or s_butt == "_down" then 
+							count_2 = count_2 + 1
+							if count_2 <= 2 then
+								return true
+							else
+								return false
+							end
+						else
+							return v
+						end
+						]]
+		
+						return v
+		
+					else
+		
+						return value
+		
+					end
+		
+				end
+		
+				show = ButtonMachine( "_left alt", show )
+				show_2 = ButtonMachine( "_up", show_2 )
+				show_2 = ButtonMachine( "_down", show_2 )
+		
+				if b:match( "_left ctrl" ) then
+					val_2, val_3 = false
+					val = true
+					count = count + 1
+				end
+		
+				if b:match( "_up" ) and val then
+					val_2 = true
+					val_3 = false
+				end
+		
+				if b:match( "_down" ) and val then
+					val_3 = true
+					val_2 = false
+				end
+		
+				if val then
+					if count <= 3 then
+						if val_2
+						and s_key < 7 then 
+							s_key = s_key + 1
+							val, val_2, val_3 = false
+						elseif val_3
+						and s_key > 1 then 
+							s_key = s_key - 1
+							val, val_2, val_3 = false
+						end
+					else
+						count = 0
+					end
+				end
+		
+			else
+				val = false
+				count, count_2 = 0, 0
+			end
+		
 		end
+		SCREENMAN:GetTopScreen():AddInputCallback( KeyTrigger )
 
-		if not show or count_2 >= 3 then
-			self:RemoveAllChildren()
-		end
+		self:SetUpdateFunction(function()
 
-		if not string.match( tostring(SCREENMAN:GetTopScreen()), "ScreenEdit" ) then
-			show = false
-		end
+			if show_2 and show then
+				AddBGChangesPreviews(self)
+				show_2 = false
+			end
 
-		self:sleep(0.001)
-		self:queuecommand("Update")
+			if not show or count_2 >= 3 then
+				self:RemoveAllChildren()
+			end	
+
+			local screen = tostring(SCREENMAN:GetTopScreen())
+			if not screen:match( "ScreenEdit" ) then
+				show = false
+			end
+
+		end)
 
 	end,
 
