@@ -8,7 +8,7 @@ local function PopPreview(event)
 
 	if event["DeviceInput"].down then
 
-		if string.match(event["DeviceInput"].button, "_left alt" ) then
+		if event["DeviceInput"].button:match("_left alt") then
 			if not show then
 				show = true
 			else
@@ -16,14 +16,19 @@ local function PopPreview(event)
 			end
 		end
 
+		-- Delay for crashing
+		--[[
 		if show 
-		and ( string.match(event["DeviceInput"].button, "_left" )
-		or string.match(event["DeviceInput"].button, "_right" ) ) then
-			count = count + 1
+		and ( event["DeviceInput"].button:match("_left")
+		or event["DeviceInput"].button:match("_right") ) then
+			 => count = count + 1
 		end
 
 	else
 		count = 0
+		
+		]]
+
 	end
 
 end
@@ -35,9 +40,9 @@ local function CheckSprites(self)
 		self:effectclock("timer")
 		self:set_tween_uses_effect_delta(false)
 
-		if string.match(s,"Sprite") then
+		if s:match("Sprite") then
 			self:set_use_effect_clock_for_texcoords(false)
-		elseif string.match(s,"ActorFrame") and self:GetChildren() then
+		elseif s:match("ActorFrame") and self:GetChildren() then
 			self:RunCommandsOnChildren( function(child)
 				CheckSprites(child)
 			end )
@@ -46,6 +51,7 @@ local function CheckSprites(self)
 end
 
 local function Resize(child)
+	child:stoptweening():stopeffect()
 	child:zoom(0.125)
 	child:x( SCREEN_WIDTH * ( - 0.0625 + 0.5 ) )
 	child:y( SCREEN_HEIGHT * ( - 0.0625 * 1.5 + 0.125 ) )
@@ -57,20 +63,13 @@ local t = Def.ActorFrame{
 
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback( PopPreview )
-		self:playcommand("Update")
-	end,
-
-	UpdateCommand=function(self)
-		if show then
-			self:diffusealpha(1)
-		else
-			self:diffusealpha(0)
-			self:RunCommandsOnChildren( function(child)
-				child:stoptweening():stopeffect()
-			end )
-		end
-		self:sleep(0.1)
-		self:queuecommand("Update")
+		self:SetUpdateFunction(function()
+			if show then
+				self:diffusealpha(1)
+			else
+				self:diffusealpha(0)
+			end		
+		end)
 	end,
 
 	OffCommand=function(self)
@@ -139,13 +138,13 @@ local function RefreshBGA_RM(self)
 
 	self:RunCommandsOnChildren( function(child)
 		if child.Name == "Movie" then
-			child:stoptweening():stopeffect()
 			child:Center()
 			child:scale_or_crop_background()
 			child:zoom( child:GetZoom() * 0.125 )
 			child:y( child:GetY() - SCREEN_HEIGHT * 0.406725 )	
 		else
 			if child.Name == "SF" then
+				child:stoptweening()
 				child:playcommand("On")
 			else
 				Resize(child)
