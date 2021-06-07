@@ -55,7 +55,7 @@ local function Resize(child)
 	child:zoom(0.125)
 	child:x( SCREEN_WIDTH * ( - 0.0625 + 0.5 ) )
 	child:y( SCREEN_HEIGHT * ( - 0.0625 * 1.5 + 0.125 ) )
-	child:playcommand("GainFocus"):playcommand("On")
+	child:playcommand("On")
 	CheckSprites(child)
 end
 
@@ -77,6 +77,9 @@ local t = Def.ActorFrame{
 	end
 
 }
+
+local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
+local RM_dir = FILEMAN:GetDirListing("/RandomMovies/")
 
 local function RefreshBGA_RM(self)
 
@@ -113,14 +116,14 @@ local function RefreshBGA_RM(self)
 
 	if index == 10 then
 
-		dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)[tonumber(choice) + 1]
+		dir = BGA_dir[tonumber(choice) + 1]
 		self:AddChildFromPath(dir.."/default.lua")
 
 	else
 
 		if check_2 then
 
-			dir = FILEMAN:GetDirListing("/RandomMovies/")[tonumber(choice) + 1]
+			dir = RM_dir[tonumber(choice) + 1]
 
 			self:AddChildFromPath("/RandomMovies/"..dir)
 			self:RunCommandsOnChildren( function(child)
@@ -128,6 +131,7 @@ local function RefreshBGA_RM(self)
 					child.Name = "Movie"
 				end
 			end )
+
 		end
 
 	end
