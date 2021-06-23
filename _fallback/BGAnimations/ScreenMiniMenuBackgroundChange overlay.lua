@@ -78,11 +78,11 @@ local t = Def.ActorFrame{
 
 }
 
-local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
-local RM_dir = FILEMAN:GetDirListing("/RandomMovies/")
-
 local function RefreshBGA_RM(self)
 
+	local BGA_dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
+	local RM_dir = FILEMAN:GetDirListing("/RandomMovies/")
+	
 	self:RemoveAllChildren()
 
 	local check, check_2
