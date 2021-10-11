@@ -4,10 +4,11 @@ return Def.ActorFrame{
     Def.Sprite{
         bitEyeCommand=function(self)
 
+            local scl = SCREEN_HEIGHT / 480
             self.Index = self:GetParent().Index
 
             self:CenterX():zoom(0.0625)
-            self:x( self:GetX() + 240 )
+            self:x( self:GetX() + 175 * scl )
             self:SetTextureFiltering(false)
             
             self:cropbottom( 0.25 )
