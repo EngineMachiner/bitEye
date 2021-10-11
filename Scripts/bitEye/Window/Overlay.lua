@@ -1,10 +1,10 @@
 
 return Def.ActorFrame{
-
 	Def.Quad{
 		OnCommand=function(self)
+			local pref = PREFSMAN:GetPreference("BGBrightness")
 			self:diffuse(Color.Black)
-			self:diffusealpha(0.5)
+			self:diffusealpha(pref)
 			self:Center()
 			self:zoomto( SCREEN_WIDTH, SCREEN_HEIGHT )
 		end
@@ -29,5 +29,4 @@ return Def.ActorFrame{
 			self:cropright(0.5)
 		end
 	}
-
 }
