@@ -148,7 +148,7 @@ local function BigOperation(self)
 		end
 		
 		if bitEye.Refresh then
-			self:sleep(0.125 * 1.5):queuecommand("Refresh")
+			self:sleep(0.2):queuecommand("Refresh")
 			self:playcommand("Update")
 			bitEye.Refresh = false
 		end

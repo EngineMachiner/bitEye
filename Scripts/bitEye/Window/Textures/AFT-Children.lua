@@ -53,13 +53,17 @@ return Def.ActorFrame{
 		s = s or song_path
 
 		self:RunCommandsOnChildren(function(a)
-			if s:sub(#s-3,#s) ~= ".lua"
+			if s and s:sub(#s-3,#s) ~= ".lua"
 			and a.Name == "bE-Custom" then
+				local w = SCREEN_WIDTH 
+				local h = SCREEN_HEIGHT
+				a:x( a:GetX() + w * 0.5 )
+				a:y( a:GetY() + h * 0.5 )
 				a:scale_or_crop_background()
 			end
 		end)
 		self:playcommand("On")
 		bitEye.AFT_IssueFix(self)
-
+		
 	end
 }

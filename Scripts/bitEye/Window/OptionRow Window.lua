@@ -79,12 +79,13 @@ local function Update(self)
 		local s = Info.Dir
 		if s and s:sub(#s-3,#s) ~= ".lua"
 		and c.Name == "bE-Custom" then
+			c:x( c:GetX() + w * 0.25 )
+			c:y( c:GetY() + h * 0.25 )
 			c:scale_or_crop_background()
 		end
 		c:playcommand("On")
 		bitEye.CAC(c)
 	end)
-	
 	bitEye.AFT_IssueFix(self)
 
 end
