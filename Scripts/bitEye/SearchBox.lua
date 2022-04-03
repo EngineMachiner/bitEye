@@ -1,10 +1,7 @@
 
-
 local SearchBox = { 
-	String = "",
-	Results = {},
-	IsVisible = false,
-	CharLim = 0
+	String = "",	Results = {},
+	IsVisible = false,	CharLim = 0
 }
 
 local Box = Def.ActorFrame{

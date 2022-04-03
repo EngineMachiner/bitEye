@@ -47,13 +47,14 @@ local function Update(self)
 	if not Info.Conditions.Row then return end
 
 	self:AddChildFromPath(bitEye.SPath .. "Window/Background.lua")
-	bitEye.ChldName(self, "bE-Background")
+	bitEye.ChildName(self, "bE-Background")
 
 	if Info.Type == "BGA" then
 		local dir = FILEMAN:GetDirListing("/BGAnimations/", true, true)
 		Info.Dir = dir[tonumber(c) + 1]
 		Info.Dir = Info.Dir .. "/default.lua"
 		self:AddChildFromPath(Info.Dir)
+		local tbl = self:GetChildren()[""]
 	end
 
 	if Info.Type == "RM" then
@@ -70,10 +71,10 @@ local function Update(self)
 		self:AddChildFromPath(Info.Dir)
 	end
 
-	bitEye.ChldName(self, "bE-Custom")
+	bitEye.ChildName(self, "bE-Custom")
 
 	self:AddChildFromPath(bitEye.SPath .. "Window/Overlay.lua")
-	bitEye.ChldName(self, "bE-Overlay")
+	bitEye.ChildName(self, "bE-Overlay")
 
 	self:RunCommandsOnChildren(function(c)
 		local s = Info.Dir
@@ -83,15 +84,18 @@ local function Update(self)
 			c:y( c:GetY() + h * 0.25 )
 			c:scale_or_crop_background()
 		end
-		c:playcommand("On")
-		bitEye.CAC(c)
 	end)
-	bitEye.AFT_IssueFix(self)
+
+	self:playcommand("On")		bitEye.CAC(self)
+	bitEye.UIScale(self)
 
 end
 
 local window = Def.ActorFrame{
 	OnCommand=function(self)
+
+		if self.Init then return end
+		self.Init = true
 
 		self.Container = {}
 		local function LockUp(n, s, f1, f2)

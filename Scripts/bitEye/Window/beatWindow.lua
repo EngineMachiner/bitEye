@@ -16,40 +16,43 @@ Info.Amp.SS = { 1, 1.5, 2, 3, 4, 6, 8 }
 local w = SCREEN_WIDTH * 2
 local h = SCREEN_HEIGHT * 2
 
--- It seems like when there's a AFTSpin
--- The BGA AFT, the overlay and the background of bitEye zoom in.
--- This is a temporal fix?
-local function AFT_IssueFix(self)
-	local bga_aft
-	local function FindAFT(a)
+-- AFT's overlapping can change the position of the content
+local function AFTFix(self)
+
+	local function FindSpriteAFT(a)
+
 		local s = tostring(a)
-		if s:match("ActorFrame")
-		and not s:match("ActorFrameTexture") then
-			a:RunCommandsOnChildren(function(b)
-				FindAFT(b)
+		local sS = "Sprite "
+		local sRTRT = "RageTextureRenderTarget "
+		local sAF = "ActorFrame "
+
+		if s:match(sS) then
+			local tex = a:GetTexture()
+			tex = tostring(tex)
+			if tex:match(sRTRT) then
+				local fov = a:GetParent():GetFOV()
+				self:RunCommandsOnChildren(function(d)
+					if d.Name == "bE-Overlay" then
+						d:xy( - w * 0.125, - h * 0.125 )
+						d:zoom( 0.5 )
+					end
+				end)
+				SCREENMAN:SystemMessage()
+				a:xy(0,0):zoom( 0.5 * a:GetParent():GetFOV() )
+			end
+		end
+
+		if s:match(sAF) then
+			a:RunCommandsOnChildren(function(child)
+				FindSpriteAFT(child)
 			end)
-		elseif s:match("ActorFrameTexture") then
-			bga_aft = a
 		end
+
 	end
-	FindAFT(self)
-	if bga_aft then
-		local function Move(s)
-			if s:GetX() then
-				s:x( s:GetX() - w * 0.125 )
-				s:y( s:GetY() - h * 0.125 )
-				s:zoom(0.5)
-			end
-		end
-		Move(bga_aft:GetParent())
-		self:RunCommandsOnChildren(function(d)
-			if d.Name == "bE-Overlay" then
-				Move(d)
-			end
-		end)
-	end
+	FindSpriteAFT(self)
+
 end
-bitEye.AFT_IssueFix = AFT_IssueFix
+bitEye.AFTFix = AFTFix
 
 local function ClockAllChildren(self)
 
@@ -58,9 +61,9 @@ local function ClockAllChildren(self)
 	self:effectclock("timer")
 	self:set_tween_uses_effect_delta(false)
 
-	if s:match("Sprite") then
+	if s:match("Sprite ") then
 		self:set_use_effect_clock_for_texcoords(false)
-	elseif s:match("ActorFrame") and self:GetChildren() then
+	elseif s:match("ActorFrame ") then
 		self:RunCommandsOnChildren( function(c)
 			ClockAllChildren(c)
 		end )
@@ -74,7 +77,7 @@ local function ChildNaming(frame, name)
 		child.Name = child.Name or name
 	end)
 end
-bitEye.ChldName = ChildNaming
+bitEye.ChildName = ChildNaming
 
 local function BigOperation(self)
 
