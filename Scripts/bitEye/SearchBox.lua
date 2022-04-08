@@ -11,6 +11,7 @@ local Box = Def.ActorFrame{
 		self:diffusealpha(0)
 		self.Container = {}
 		self.s = SearchBox.String
+		local pn = 'PlayerNumber_P'
 		self:SetUpdateFunction(function()
 
 			local c = self.Container
@@ -26,10 +27,14 @@ local Box = Def.ActorFrame{
 				self:stoptweening()
 				self:linear(0.25):diffusealpha(1)
 				c[1] = true
+				SCREENMAN:set_input_redirected(pn .. "1", true)
+				SCREENMAN:set_input_redirected(pn .. "2", true)
 			elseif not v and c[1] then
 				self:stoptweening()
 				self:linear(0.25):diffusealpha(0)
 				c[1] = false
+				SCREENMAN:set_input_redirected(pn .. "1", false)
+				SCREENMAN:set_input_redirected(pn .. "2", false)
 			end
 
 		end)
