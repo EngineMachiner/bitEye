@@ -1,10 +1,6 @@
 
 return Def.ActorFrame{
 
-	AFTCommand=function(self)
-		bitEye.AFT = false
-	end,
-
 	Def.Quad{
 		OnCommand=function(self)
 			local pref = PREFSMAN:GetPreference("BGBrightness")
