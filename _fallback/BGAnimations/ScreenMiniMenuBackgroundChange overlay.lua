@@ -2,4 +2,4 @@
 -- It's better to add bitEye manually!
 
 local bitEye = LoadModule("bitEye/bitEye.lua")
-return Def.ActorFrame{ bitEye.spawn("OptionRow Window") }
+return bitEye.spawn("OptionRow Window")
