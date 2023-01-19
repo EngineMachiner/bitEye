@@ -26,7 +26,7 @@ return Def.ActorFrame{
 
 			loadfile(path)(),
 			HideCommand=function(self) self:stoptweening():linear(0.25):diffusealpha(0) end,
-			ShowCommand=function(self) self:stoptweening():linear(0.25):diffusealpha(1) end,
+			ShowCommand=function(self) self:stoptweening():linear(0.25):diffusealpha(1):playcommand("bitEye") end,
 			OnCommand=function(self)
 
 				local update = bitEye.createCooldown( self, "cooldown", "limit", function(self) self:playcommand("bitEye") end )

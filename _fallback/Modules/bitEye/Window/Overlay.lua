@@ -1,5 +1,7 @@
-
 return Def.ActorFrame{
+
+	-- Check bitEye.tweakAFTs
+	Name = "bitEyeOverlay",
 
 	Def.Quad{
 		OnCommand=function(self)

@@ -70,8 +70,7 @@ local function Update(self)
 	end
 
 	self:AddChildFromPath(bitEye.Path .. "Window/Overlay.lua")
-	Layers.Overlay = bitEye.getLastChild(self)
-	Layers.Overlay.Name = "bitEyeOverlay"
+	Layers.Overlay = self:GetChild("bitEyeOverlay")
 
 	for k,v in pairs( { Layers.SongCustom, Layers.RM } ) do
 		if tostring(v):match("Sprite") then v:scale_or_crop_background() end

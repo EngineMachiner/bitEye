@@ -38,15 +38,21 @@ return Def.ActorFrame{
 		local songDirectory = FILEMAN:GetDirListing(path, false, true)
 
 		local currentBeat, i = GAMESTATE:GetSongBeat()
-		local firstChange, lastChange = bgChanges[1], bgChanges[#bgChanges]
 		
+		if #bgChanges == 1 and currentBeat == bgChanges[1].start_beat then i = 1 end
+
 		for k=2,#bgChanges do
 
 			local current = bgChanges[k - 1]
 			local nextChange = bgChanges[k]
 
+			-- in the middle
 			local b = currentBeat >= current.start_beat
 			b = b and currentBeat < nextChange.start_beat
+
+			-- Last BGChange
+			local last = currentBeat == nextChange.start_beat and k == #bgChanges
+			if last then i = k break end
 
 			if b then i = k - 1 break end
 
@@ -90,10 +96,7 @@ return Def.ActorFrame{
 		Layers.Animation = bitEye.getLastChild(self)
 
 		self:AddChildFromPath( bitEye.Path .. "Window/Overlay.lua" )
-		Layers.Overlay = bitEye.getLastChild(self)
-
-		-- Check bitEye.tweakAFTs
-		Layers.Overlay.Name = "bitEyeOverlay"
+		Layers.Overlay = self:GetChild("bitEyeOverlay")
 
 		local animation = Layers.Animation
 		local isStatic = tostring( animation ):match("Sprite")
