@@ -3,12 +3,10 @@ return Def.Sprite{
     OnCommand=function(self)
 
         local texture = bitEye.EditNoteField.Texture
-        local scale = SCREEN_HEIGHT / 480
+        local scale = SCREEN_HEIGHT / 720
 
-        local y = SCREENMAN:GetTopScreen():GetChild("EditNoteField"):GetY()
-
-        self:CenterX():zoom(0.125 * 1.5)
-        self:xy( self:GetX() + 250 * scale, y )
+        self:CenterX():zoom( 0.185 * scale )
+        self:x( self:GetX() + 375 * scale )
         self:SetTextureFiltering(false)
             
         self:cropbottom( 0.25 ):croptop( 0.275 )
@@ -16,6 +14,10 @@ return Def.Sprite{
 
         self:SetTexture( texture )
             
+    end,
+
+    bitEyeCommand=function(self)
+        self:y( SCREENMAN:GetTopScreen():GetChild("EditNoteField"):GetY() )
     end
     
 }
