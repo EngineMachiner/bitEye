@@ -100,4 +100,17 @@ bitEye.createCooldown = function( self, cooldownName, limitName, f )
 
 end
 
+bitEye.isCustom = function( rowIndex ) 
+	local isCustom = false
+	for i=7,9 do isCustom = isCustom or rowIndex == i or rowIndex == i + 8 end
+	if rowIndex == 7 or rowIndex == 15 then return "isScript" end
+	return isCustom
+end
+
+bitEye.isBGA = function( rowIndex ) return rowIndex == 10 or rowIndex == 18 end
+
+bitEye.isRM = function( rowIndex )
+	return ( rowIndex > 10 and rowIndex < 14 ) or ( rowIndex > 18 and rowIndex < 22 )
+end
+
 return bitEye

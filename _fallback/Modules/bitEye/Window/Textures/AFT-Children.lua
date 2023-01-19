@@ -5,12 +5,18 @@ local Layers = EditNoteField.Layers
 -- Get background according to the BGChanges data table
 local function lookUpBackgroundPath(dir, data)
 
+	local songDir = GAMESTATE:GetCurrentSong():GetSongDir()
+
 	for i=1,#dir do
 
 		local s1 = dir[i]:gsub("%p","")
 		local s2 = data.file1:gsub("%p","")
+		local checkSongDir = dir[i]:match(songDir)
 
-		if s1:match(s2) then return dir[i] end
+		if s1:match(s2) then
+			if checkSongDir then return songDir .. data.file1 
+			else return dir[i] end
+		end
 		
 	end
 
@@ -21,6 +27,8 @@ end
 return Def.ActorFrame{
 	InitCommand=function(self) self:Center() end,
 	bitEyeCommand=function(self)
+
+		if not bitEye.EditNoteField.isVisible then return end
 
 		local bgChanges = bitEye.BGChanges
 		local path = GAMESTATE:GetCurrentSong():GetSongDir()
@@ -45,8 +53,7 @@ return Def.ActorFrame{
 		end
 
 		if not i then
-			local window = bitEye.EditNoteField
-			window:playcommand("Hide")
+			local window = bitEye.EditNoteField			window:playcommand("Hide")
 			window.isVisible = false 		return 
 		end
 
@@ -60,6 +67,10 @@ return Def.ActorFrame{
 		local rm_path = lookUpBackgroundPath(rm_directory, data)
 		local songPath = lookUpBackgroundPath(songDirectory, data)
 
+		if songPath and ( bga_path or rm_path ) then 
+			bga_path = false		rm_path = false
+		end
+
 		self:AddChildFromPath( bitEye.Path .. "Window/Background.lua" )
 		Layers.Background = bitEye.getLastChild(self)
 
@@ -72,19 +83,16 @@ return Def.ActorFrame{
 		if rm_path then self:AddChildFromPath(rm_path) end
 
 		if songPath then
-
-			if FILEMAN:DoesFileExist( songPath .. "/default.lua" ) then
-				songPath = songPath .. "/default.lua"
-			end
-
+			if not data.file1:match('%.') then songPath = songPath .. "/default.lua" end
 			self:AddChildFromPath(songPath)
-
 		end
 
 		Layers.Animation = bitEye.getLastChild(self)
 
 		self:AddChildFromPath( bitEye.Path .. "Window/Overlay.lua" )
 		Layers.Overlay = bitEye.getLastChild(self)
+
+		-- Check bitEye.tweakAFTs
 		Layers.Overlay.Name = "bitEyeOverlay"
 
 		local animation = Layers.Animation

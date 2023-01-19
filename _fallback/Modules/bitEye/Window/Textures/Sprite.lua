@@ -1,5 +1,3 @@
-
--- Add sprites with textures
 return Def.Sprite{
 
     OnCommand=function(self)
@@ -9,7 +7,6 @@ return Def.Sprite{
 
         local y = SCREENMAN:GetTopScreen():GetChild("EditNoteField"):GetY()
 
-        self:diffusealpha(1)
         self:CenterX():zoom(0.125 * 1.5)
         self:xy( self:GetX() + 250 * scale, y )
         self:SetTextureFiltering(false)

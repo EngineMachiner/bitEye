@@ -24,11 +24,9 @@ local function Update(self)
 	choice = row:GetChoiceInRowWithFocus( OptionRow.PlayerEnum )
 	choice = tonumber(choice)
 
-	local isCustom = false
-	for i=7,9 do isCustom = isCustom or index == i or index == i + 8 end
-
-	local isBGA = index == 10 or index == 18
-	local isRM = ( index > 10 and index < 14 ) or ( index > 18 and index < 22 )
+	local isCustom = bitEye.isCustom(index)
+	local isBGA = bitEye.isBGA(index)
+	local isRM = bitEye.isRM(index)
 
 	if not OptionRow.canShow then return end
 
@@ -38,13 +36,11 @@ local function Update(self)
 	-- Song custom background
 	if isCustom then
 
-		local cur = GAMESTATE:GetCurrentSong():GetSongDir()
-		directory = FILEMAN:GetDirListing(cur, false, true)
+		local songDir = GAMESTATE:GetCurrentSong():GetSongDir()
 
-		local filePath = directory[ choice + 1 ]
-		if FILEMAN:DoesFileExist( filePath .. "/default.lua" ) then
-			filePath = filePath .. "/default.lua"
-		end
+		local fileName = row:GetChild(""):GetChild("Item"):GetText()
+		local filePath = songDir .. fileName
+		if isCustom == "isScript" then filePath = filePath .. "/default.lua" end
 
 		self:AddChildFromPath( filePath )
 		Layers.SongCustom = bitEye.getLastChild(self)
@@ -94,17 +90,13 @@ local function onChangeRow(self)
 	local isVisible = self.isVisible
 	local screen = SCREENMAN:GetTopScreen()
 	local index = screen:GetCurrentRowIndex( OptionRow.PlayerEnum )
-
-	for i=7,18 do
-
-		i = i > 11 and i + 5 or i
-
-		if index == i then 
-			OptionRow.canShow = true
-			if isVisible then self.cooldown = 0 end
-		break
-		end
-		
+	
+	local isAny = bitEye.isCustom(index) or bitEye.isBGA(index)
+	isAny = isAny or bitEye.isRM(index)
+	
+	if isAny then
+		OptionRow.canShow = true
+		if isVisible then self.cooldown = 0 end
 	end
 
 	OptionRow.index = index
@@ -141,7 +133,7 @@ local function refreshEditNoteField(self)
 	self:RemoveAllChildren()		self.isOff = true
 
 	local window = bitEye.EditNoteField			window.cooldown = window.limit
-	window:playcommand("bitEye")
+	window:sleep(0.5):queuecommand("bitEye")
 
 end
 
@@ -159,6 +151,7 @@ return Def.ActorFrame{
 
 		self.isOff = false
 		self.isVisible = false				self:diffusealpha(0)
+		OptionRow.Actor = self
 
 		self:SetUpdateFunction( bitEye.createCooldown( self, "cooldown", "limit", function() Update( OptionRow.AFT )  end ) )
 

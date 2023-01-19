@@ -150,6 +150,69 @@ local function inputToText( event )
 	
 end
 
+local function updateRow(p, i)
+
+	local r = SearchBox.results
+
+	if not r[i] then return end
+
+	local pn = 'PlayerNumber_P1'
+	local screen = SCREENMAN:GetTopScreen()
+	local index = screen:GetCurrentRowIndex(pn)
+	local row = screen:GetOptionRow(index)
+	local choice = row:GetChoiceInRowWithFocus(pn)
+
+	row:SetChoiceInRowWithFocus(pn, r[i][1]-1)
+	p:playcommand("MenuRightP1")
+
+end
+
+local function logic(p, event)
+
+	local input = event.DeviceInput			local button = input.button
+
+	local isFirstPressed = event.type == "InputEventType_FirstPress"
+	local isReleased = event.type == "InputEventType_Release"
+
+	if input.down and isFirstPressed then
+
+		local r = SearchBox.results
+
+		if button:match("left ctrl") and bitEye.OptionRow.Actor.isVisible then 
+			SearchBox.isVisible = not SearchBox.isVisible 
+		end
+
+		if r.Index then
+
+			local i = r.Index
+
+			if button:match("KP enter") then
+					
+				if #r > 1 then i = i < #r and i + 1 or i end
+				updateRow(p, i)
+
+			elseif button:match("KP .") then
+					
+				if #r > 1 then 
+					i = i > 1 and i - 1 or i		updateRow(p, i)
+				end
+
+			end
+
+			SearchBox.results.Index = i
+
+		end
+
+	end
+
+	-- Uppercase
+	if input.button:match("left shift") then
+		SearchBox.capsOn = true
+		if isReleased then SearchBox.capsOn = false end
+	end
+
+end
+
 return Def.ActorFrame{
 
 	Name="SearchBox", 	Box,
@@ -157,71 +220,10 @@ return Def.ActorFrame{
 
 		local screen = SCREENMAN:GetTopScreen()
 		local p = self:GetParent():GetParent()
-
-		local function updateRow(i)
-
-			local r = SearchBox.results
-
-			if not r[i] then return end
-
-			local pn = 'PlayerNumber_P1'
-			local screen = SCREENMAN:GetTopScreen()
-			local index = screen:GetCurrentRowIndex(pn)
-			local row = screen:GetOptionRow(index)
-			local choice = row:GetChoiceInRowWithFocus(pn)
-
-			row:SetChoiceInRowWithFocus(pn, r[i][1]-1)
-			p:playcommand("MenuRightP1")
-
-		end
-
-		local function logic(event)
-
-			local input = event.DeviceInput			local button = input.button
-
-			local isFirstPressed = event.type == "InputEventType_FirstPress"
-			local isReleased = event.type == "InputEventType_Release"
-
-			if input.down and isFirstPressed then
-
-				local r = SearchBox.results
-
-				if button:match("left ctrl") then SearchBox.isVisible = not SearchBox.isVisible end
-
-				if r.Index then
-
-					local i = r.Index
-
-					if button:match("KP enter") then
-							
-						if #r > 1 then i = i < #r and i + 1 or i end
-						updateRow(i)
-
-					elseif button:match("KP .") then
-							
-						if #r > 1 then 
-							i = i > 1 and i - 1 or i		updateRow(i)
-						end
-
-					end
-
-					SearchBox.results.Index = i
-
-				end
-
-			end
-
-			-- Uppercase
-			if input.button:match("left shift") then
-				SearchBox.capsOn = true
-				if isReleased then SearchBox.capsOn = false end
-			end
-
-		end
 		
 		self:playcommand("ChangeRowMessage")
 		screen:AddInputCallback( inputToText )
-		screen:AddInputCallback( logic )
+		screen:AddInputCallback( function(event) logic(p, event) end )
 
 	end,
 
@@ -229,14 +231,42 @@ return Def.ActorFrame{
 
 		local pn = 'PlayerNumber_P1'
 		local screen = SCREENMAN:GetTopScreen()
-		local index = screen:GetCurrentRowIndex(pn)
+		local index = screen:GetCurrentRowIndex(pn)		self.rowIndex = index
+		local path = GAMESTATE:GetCurrentSong():GetSongDir()
+		
+		local isCustomScript = bitEye.isCustom(index) == "isScript"
 
-		if index == 10 then
-			SearchBox.directory = FILEMAN:GetDirListing("/BGAnimations/", true, true)
-			SearchBox.charLimit = 5
-		elseif index >= 11 and index <= 13 then
-			SearchBox.directory = FILEMAN:GetDirListing("/RandomMovies/")
-			SearchBox.charLimit = 3
+		local dir = FILEMAN:GetDirListing(path)
+		local onlyDirs = FILEMAN:GetDirListing(path, true, false)
+		local onlyFiles = {}
+
+		for k,v in pairs( dir ) do 
+
+			local skip = false
+
+			for k2, v2 in pairs( onlyDirs ) do 
+				if v == v2 then skip = true end 
+			end
+
+			skip = skip or ( not v:match(".png") and not v:match(".avi") )
+			if not skip then onlyFiles[#onlyFiles+1] = v end
+
+		end
+
+		local data = {
+			{ isCustomScript, onlyDirs, 1 },
+			{ not isCustomScript, onlyFiles, 1 },
+			{ bitEye.isBGA(index), FILEMAN:GetDirListing("/BGAnimations/", true, true), 5 },
+			{ bitEye.isRM(index), FILEMAN:GetDirListing("/RandomMovies/"), 5 }
+		}
+
+		for i=1,#data do
+
+			local inner = data[i]
+			if inner[1] then 
+				SearchBox.directory = inner[2]		SearchBox.charLimit = inner[3]		break
+			else SearchBox.directory = {} end
+
 		end
 
 	end
