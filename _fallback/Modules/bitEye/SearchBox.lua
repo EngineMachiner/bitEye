@@ -84,6 +84,7 @@ local Box = Def.ActorFrame{
 		
 		Name="Subtitle",		Font="Common normal",
 		InitCommand=function(self)
+			SearchBox.Subtitle = self
 			self.defaultColor = color("#808080")
 			self:y(30):settext("Waiting for input.")
 			self:diffuse(self.defaultColor)
@@ -229,12 +230,16 @@ return Def.ActorFrame{
 
 	ChangeRowMessageCommand=function(self)
 
+		SearchBox.input = ""		SearchBox.Subtitle:playcommand("Init")
+
 		local pn = 'PlayerNumber_P1'
 		local screen = SCREENMAN:GetTopScreen()
 		local index = screen:GetCurrentRowIndex(pn)		self.rowIndex = index
 		local path = GAMESTATE:GetCurrentSong():GetSongDir()
 		
+		local isBGA, isRM = bitEye.isBGA(index), bitEye.isRM(index)
 		local isCustomScript = bitEye.isCustom(index) == "isScript"
+		local isCustomContent = not isCustomScript and not isBGA and not isRM
 
 		local dir = FILEMAN:GetDirListing(path)
 		local onlyDirs = FILEMAN:GetDirListing(path, true, false)
@@ -255,17 +260,19 @@ return Def.ActorFrame{
 
 		local data = {
 			{ isCustomScript, onlyDirs, 1 },
-			{ not isCustomScript, onlyFiles, 1 },
-			{ bitEye.isBGA(index), FILEMAN:GetDirListing("/BGAnimations/", true, true), 5 },
-			{ bitEye.isRM(index), FILEMAN:GetDirListing("/RandomMovies/"), 5 }
+			{ isCustomContent, onlyFiles, 1 },
+			{ isBGA, FILEMAN:GetDirListing("/BGAnimations/", true, true), 5 },
+			{ isRM, FILEMAN:GetDirListing("/RandomMovies/"), 5 }
 		}
 
+		local currentDir = SearchBox.directory
+		
 		for i=1,#data do
 
-			local inner = data[i]
-			if inner[1] then 
-				SearchBox.directory = inner[2]		SearchBox.charLimit = inner[3]		break
-			else SearchBox.directory = {} end
+			local data2 = data[i]
+			if data2[1] then
+				currentDir = data2[2]		SearchBox.charLimit = data2[3]		break
+			else currentDir = {} end
 
 		end
 
