@@ -46,12 +46,13 @@ return Def.ActorFrame{
 			local current = bgChanges[k - 1]
 			local nextChange = bgChanges[k]
 
+			local last = currentBeat == nextChange.start_beat and k == #bgChanges
+
 			-- in the middle
 			local b = currentBeat >= current.start_beat
-			b = b and currentBeat < nextChange.start_beat
+			b = b and currentBeat < nextChange.start_beat and not last
 
 			-- Last BGChange
-			local last = currentBeat == nextChange.start_beat and k == #bgChanges
 			if last then i = k break end
 
 			if b then i = k - 1 break end
