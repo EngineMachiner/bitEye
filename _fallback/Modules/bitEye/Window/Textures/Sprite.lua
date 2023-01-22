@@ -17,7 +17,9 @@ return Def.Sprite{
     end,
 
     bitEyeCommand=function(self)
-        self:y( SCREENMAN:GetTopScreen():GetChild("EditNoteField"):GetY() )
+        local notefield = SCREENMAN:GetTopScreen():GetChild("EditNoteField")
+        if not notefield then return end
+        self:y( notefield:GetY() )
     end
     
 }
