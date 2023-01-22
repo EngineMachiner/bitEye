@@ -265,14 +265,12 @@ return Def.ActorFrame{
 			{ isRM, FILEMAN:GetDirListing("/RandomMovies/"), 5 }
 		}
 
-		local currentDir = SearchBox.directory
-		
 		for i=1,#data do
 
 			local data2 = data[i]
 			if data2[1] then
-				currentDir = data2[2]		SearchBox.charLimit = data2[3]		break
-			else currentDir = {} end
+				SearchBox.directory = data2[2]		SearchBox.charLimit = data2[3]		break
+			else SearchBox.directory = {} end
 
 		end
 
