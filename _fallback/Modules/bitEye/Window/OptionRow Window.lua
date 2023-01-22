@@ -168,6 +168,7 @@ return Def.ActorFrame{
 
 					if OptionRow.canShow and isVisible then
 						self:stoptweening():linear(0.25):diffusealpha(1)
+						Update( OptionRow.AFT ) 
 					end
 	
 					if not isVisible then close(self) end
