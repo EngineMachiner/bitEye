@@ -9,7 +9,7 @@ return Def.Sprite{
         self:x( self:GetX() + 375 * scale )
         self:SetTextureFiltering(false)
             
-        self:cropbottom( 0.25 ):croptop( 0.275 )
+        self:cropbottom( 0.25 ):croptop( 0.25 )
         self:faderight( 0.25 ):fadeleft( 0.25 )
 
         self:SetTexture( texture )
