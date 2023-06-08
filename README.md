@@ -6,4 +6,13 @@ https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-
 
 Library and tool to preview RandomMovies and BGAnimations when creating BGScripts or charts in StepMania 5+ or OutFox.
 
-Check the Wiki if you want to add this tool to the game.
+## Usage
+
+1. Copy the bitEye folder to _fallback Modules folder.
+2. Load bitEye.lua using LoadModule() on the initial __fallback screen.
+3. Load bitEye's EditNoteField preview window actor to _fallback's ScreenEdit top layer with bitEye.spawn("EditNoteField/Actor")
+4. Load bitEye's OptionRow preview window actor to _fallback's ScreenMiniMenuBackgroundChange top layer with bitEye.spawn("OptionRow/Actor")
+
+## Credits
+- Project Moondance dev team.
+
