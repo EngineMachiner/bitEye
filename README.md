@@ -4,12 +4,12 @@
 
 https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-8ab4-c883ab724bf8.mp4
 
-bitEye is a library and tool to preview RandomMovies and BGAnimations when creating BGScripts or charts in OutFox or StepMania 5+.
+bitEye is a library and tool to preview RandomMovies and BGAnimations when creating BGScripts or charts in OutFox and StepMania 5+.
 
 ## Usage
 
 0. Make sure you have the tapLua library. ( https://github.com/EngineMachiner/tapLua )
-1. Copy the bitEye folder to _fallback Modules folder.
+1. Copy the bitEye folder to fallback Modules folder.
 2. Load bitEye.lua using LoadModule() on the initial fallback screen.
 3. Load bitEye's EditNoteField preview window actor to fallback's ScreenEdit top layer with bitEye.spawn("EditNoteField/Actor")
 4. Load bitEye's OptionRow preview window actor to fallback's ScreenMiniMenuBackgroundChange top layer with bitEye.spawn("OptionRow/Actor")
