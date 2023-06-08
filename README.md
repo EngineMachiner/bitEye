@@ -12,6 +12,7 @@ Library and tool to preview RandomMovies and BGAnimations when creating BGScript
 2. Load bitEye.lua using LoadModule() on the initial __fallback screen.
 3. Load bitEye's EditNoteField preview window actor to _fallback's ScreenEdit top layer with bitEye.spawn("EditNoteField/Actor")
 4. Load bitEye's OptionRow preview window actor to _fallback's ScreenMiniMenuBackgroundChange top layer with bitEye.spawn("OptionRow/Actor")
+5. Use the inputs while on these screens. ( Check wiki )
 
 ## Credits
 - Project Moondance dev team.
