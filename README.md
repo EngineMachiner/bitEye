@@ -16,5 +16,8 @@ bitEye is a library and tool to preview RandomMovies and BGAnimations when creat
 5. Use the inputs while on these screens. ( Check wiki )
 
 ## Credits
-- Project Moondance dev team.
+- Project Moondance developers
+- Inori
+- leadbman
+- Accelerator
 
