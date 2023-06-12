@@ -25,7 +25,14 @@ return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
 return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
 ```
 
-5. Use the inputs while on these screens. ( Check wiki )
+5. Use the inputs while on these screens.
+
+## Inputs
+* The **Left Alt** key shows and hides the preview on both screens.
+
+#### ScreenMiniMenuBackgroundChange
+* The **Left Ctrl** key opens the search box. **Only available on OutFox.**
+* The **Right Ctrl** key zooms in and out the preview.
 
 ## Credits
 - Project Moondance developers
