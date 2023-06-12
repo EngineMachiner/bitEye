@@ -31,7 +31,9 @@ return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
 * The **Left Alt** key shows and hides the preview on both screens.
 
 #### ScreenMiniMenuBackgroundChange
-* The **Left Ctrl** key opens the search box. **Only available on OutFox.**
+* The **Left Ctrl** key opens the search box. 
+* Write the keywords while focusing the search box and switch the option row between results by using the **DOT** and **ENTER** keys. **Only available on OutFox.**
+
 * The **Right Ctrl** key zooms in and out the preview.
 
 ## Credits
