@@ -75,15 +75,14 @@ return Def.ActorFrame {
                     local b = currentBeat >= current.start_beat
                     b = b and currentBeat < nextChange.start_beat and not last
         
-                    -- Last BGChange.
-                    if last then i = k break end
+                    if last then i = k break end    -- Last BGChange.
         
                     if b then i = k - 1 break end
         
                 end
-        
-                if not i then EditNoteField:playcommand("Close") return end
-        
+
+                if not i then EditNoteField:queuecommand("Close") return end
+                
                 self:RemoveAllChildren()
         
                 local bgChange = bgChanges[i]

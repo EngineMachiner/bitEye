@@ -1,9 +1,18 @@
 
+local function isPlaying()
+
+	local screen = SCREENMAN:GetTopScreen()
+	local getEditState = screen.GetEditState
+
+	return getEditState and getEditState(screen) == "EditState_Playing"
+	
+end
+
 local function logic( self, event )
 
 	local input = event.DeviceInput			local button = input.button
 
-	if not input.down then return end
+	if not input.down or isPlaying() then return end
 
 	local isMoving = button:match("_up") or button:match("_down")
 	if isMoving then self.cooldown = 0 end
@@ -26,7 +35,7 @@ return Def.ActorFrame {
 
 	Name="bitEye EditNoteField", 	loadfile( bitEye.Path .. "EditNoteField/Elements.lua" )(),
 
-	OpenCommand=function(self) 
+	OpenCommand=function(self)
 		self:stoptweening():playcommand("Load"):linear(0.25):diffusealpha(1) 
 	end,
 
@@ -49,9 +58,7 @@ return Def.ActorFrame {
 
 		self:SetUpdateFunction( function()
 	
-			local isPlaying = not tostring(screen):match( "ScreenEdit" )
-			isPlaying = isPlaying or screen:GetEditState() == "EditState_Playing"
-			if isPlaying then self:diffusealpha(0) self.isVisible = false end
+			if isPlaying() then self:diffusealpha(0) self.isVisible = false end
 
 			update()
 
