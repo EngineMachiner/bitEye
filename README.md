@@ -3,6 +3,8 @@
 # bitEye
 bitEye is a library and tool to preview RandomMovies and BGAnimations when creating simfiles or charts in OutFox and StepMania 5+.
 
+bitEye has been tested through from StepMania 5.0.12 to 5.3 / OutFox.
+
 https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-8ab4-c883ab724bf8.mp4
 
 ## How to use
