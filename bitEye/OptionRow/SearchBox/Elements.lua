@@ -9,10 +9,13 @@ return Def.ActorFrame {
 
 		OnCommand=function(self)
 
+			local scale = SCREEN_HEIGHT / 720
+
 			self:zoomto( 320 * 0.75, 160 ):diffuse( Color.Black ):diffusealpha(0.5)
 
 			local w = self:GetZoomedWidth()			local h = self:GetZoomedHeight()
-	
+			w, h = w * scale, h * scale
+			
 			SearchBox:SetWidth(w):xy( SCREEN_WIDTH - w * 0.675,	SCREEN_CENTER_Y - h )
 
 		end
@@ -37,12 +40,12 @@ return Def.ActorFrame {
 
 	Def.BitmapText {
 		
-		Name="Subtitle" ,Font="Common normal",
+		Name="Subtitle",	Font="Common normal",
 		OnCommand=function(self)
 
 			self.defaultColor = color("#808080")
 
-			self:y(30):settext("Waiting for input."):diffuse( self.defaultColor )
+			self:y(30):diffuse( self.defaultColor )
 
 		end,
 
@@ -54,6 +57,8 @@ return Def.ActorFrame {
 			local lim = SearchBox.charLimit			local dir = SearchBox.directory
 
 			local color = self.defaultColor			local text = "No results found."
+
+			if #s == 0 then text = "Waiting for input." end
 
 			if #s >= lim then
 

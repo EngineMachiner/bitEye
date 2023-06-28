@@ -1,6 +1,14 @@
 
-bitEye = { OptionRow = {} }
-bitEye.Path = "/Appearance/Themes/_fallback/Modules/bitEye/"
+local path = "/Appearance/Themes/_fallback/Modules/bitEye/"
+
+if tonumber( VersionDate() ) < 20191216 then
+
+    LoadModule = function(s) loadfile( "/Scripts/" .. s )() end
+	path = "/Scripts/bitEye/"
+
+end
+
+bitEye = { OptionRow = {}, Path = path }
 
 LoadModule("bitEye/Config.lua")
 
@@ -8,9 +16,7 @@ bitEye.spawn = function(s)
 
 	if not s:match("%.lua") then s = s .. ".lua" end
 
-	return Def.ActorFrame{ OnCommand=function(self)
-		self:AddChildFromPath( bitEye.Path .. s )
-	end }
+	return Def.ActorFrame{ OnCommand=function(self) self:AddChildFromPath( path .. s ) end }
 
 end
 

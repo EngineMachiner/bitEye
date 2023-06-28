@@ -48,7 +48,8 @@ local function setChoice( resultIndex )
 	local row = screen:GetOptionRow(index)
 	-- row:GetChoiceInRowWithFocus(pn)
 
-	row:SetChoiceInRowWithFocus( pn, r[i].Index - 1 )
+	local setChoice = row.SetChoiceInRowWithFocus
+	if setChoice then setChoice( row, pn, r[i].Index - 1 ) else return end
 
 	-- Update bitEye preview.
 	bitEye.OptionRow:playcommand("Load")
@@ -122,7 +123,9 @@ return Def.ActorFrame {
 		
 		self.currentChoice = 0		self.input = ''		self.isVisible = false
 
-		self:diffusealpha(0)
+		self:diffusealpha(0):zoom( SCREEN_HEIGHT / 720 )
+
+		-- Two theme scale offsets. One here and one in Elements.lua in the first quad function.
 
 	end,
 

@@ -131,12 +131,21 @@ return Def.ActorFrame {
     
         OnCommand=function(self)
     
-            self:Center():SetUpdateFunction( function()
+            local config = bitEye.Config.EditNoteField      local pos = config.Pos
+
+            self:Center()
+
+            if tonumber( VersionDate() ) < 20191216 then
+                local scale = SCREEN_HEIGHT / 720
+                self:xy( self:GetX() + pos.x * scale, self:GetY() + pos.y * scale ) 
+            end
+
+            self:SetUpdateFunction( function()
     
                 local notefield = SCREENMAN:GetTopScreen():GetChild("EditNoteField")
                 if not notefield then return end
 
-                local config = bitEye.Config.EditNoteField      local pos = config.Pos
+                config = bitEye.Config.EditNoteField      pos = config.Pos
     
                 self:xy( notefield:GetX() + pos.x, notefield:GetY() + pos.y )
     
