@@ -13,15 +13,14 @@ local function onChangeRow(self)
 	isAny = isAny or bitEye.isRM(currentIndex)
 	
 	self.canShow = isAny
-	if isAny and self.isVisible then self.cooldown = 0 end
 
-	if not self.canShow then self:playcommand("Close") end
+	if not self.isVisible then return end
+
+	if isAny then self.cooldown = 0 else self:playcommand("Close") end
 
 end
 
 local function refreshEditNoteField(self)
-
-	self:RemoveAllChildren()
 
 	-- In case the user doesn't use the EditNoteField preview.
 	local window = bitEye.EditNoteField			if not window then return end

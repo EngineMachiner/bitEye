@@ -45,7 +45,8 @@ return Def.ActorFrame {
 
 			self.defaultColor = color("#808080")
 
-			self:y(30):diffuse( self.defaultColor )
+			self.formerText = "Waiting for input."
+			self:y(30):diffuse( self.defaultColor ):settext( self.formerText )
 
 		end,
 
@@ -58,7 +59,7 @@ return Def.ActorFrame {
 
 			local color = self.defaultColor			local text = "No results found."
 
-			if #s == 0 then text = "Waiting for input." end
+			if #s == 0 then text = self.formerText end
 
 			if #s >= lim then
 

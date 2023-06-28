@@ -120,8 +120,8 @@ return Def.ActorFrame {
 	InitCommand=function(self)
 
 		SearchBox = self
-		
-		self.currentChoice = 0		self.input = ''		self.isVisible = false
+
+		self.currentChoice = 0		self.input = ''
 
 		self:diffusealpha(0):zoom( SCREEN_HEIGHT / 720 )
 
@@ -131,8 +131,7 @@ return Def.ActorFrame {
 
 	OnCommand=function(self)
 
-		local screen = SCREENMAN:GetTopScreen()
-		local p = self:GetParent():GetParent()
+		local screen = SCREENMAN:GetTopScreen()		local p = self:GetParent():GetParent()
 		
 		self:playcommand("ChangeRowMessage")
 
