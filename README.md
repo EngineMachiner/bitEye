@@ -10,12 +10,22 @@ https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-
 ## How to use
 
 0. Make sure you have the tapLua library. ( https://github.com/EngineMachiner/tapLua )
+
+### Outfox
+
 1. Copy the bitEye folder to fallback Modules folder.
 2. Load the tapLua and bitEye module using LoadModule() on the initial fallback screen.
 
    For example the ScreenInit overlay script should look like this using LoadModule(): <br><br>
    <img src=https://github.com/EngineMachiner/bitEye/assets/15896027/53af2402-f49d-46e2-8a46-f46d68b3ed37 width=400>
    <br><br>
+
+### StepMania
+
+1. Copy the bitEye folder in your "Stepmania/Scripts" folder.
+2. Reload scripts once at first screen if something goes wrong.
+
+---
 
 3. Load bitEye's EditNoteField preview window actor to a fallback's ScreenEdit top layer:
 ```lua 
