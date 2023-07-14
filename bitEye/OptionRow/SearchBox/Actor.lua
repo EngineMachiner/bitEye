@@ -38,7 +38,7 @@ end
 
 local function setChoice( resultIndex )
 
-	local r = SearchBox.results							local i = resultIndex
+	local r = SearchBox.results							local i = resultIndex + 1
 
 	if not r[i] then return end							SearchBox.currentChoice = i
 	
@@ -46,7 +46,6 @@ local function setChoice( resultIndex )
 	local screen = SCREENMAN:GetTopScreen()
 	local index = screen:GetCurrentRowIndex(pn)
 	local row = screen:GetOptionRow(index)
-	-- row:GetChoiceInRowWithFocus(pn)
 
 	local setChoice = row.SetChoiceInRowWithFocus
 	if setChoice then setChoice( row, pn, r[i].Index - 1 ) else return end
@@ -74,14 +73,7 @@ local function checkChoice(button)
 	local r = SearchBox.results
 	local i = SearchBox.currentChoice
 
-	if button:match("KP enter") then
-
-		if #r > 1 then i = i < #r and i + 1 or i end	setChoice(i)
-
-	elseif button:match("KP %.") then
-
-		if #r > 1 then i = i > 1 and i - 1 or i end		setChoice(i)
-
+	if button:match("KP enter") or button:match("KP %.") then setChoice(i)
 	else SearchBox.currentChoice = 0 end
 
 end
