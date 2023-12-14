@@ -9,7 +9,7 @@ https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-
 
 ## How to use
 
-0. Make sure you have the tapLua library. ( https://github.com/EngineMachiner/tapLua )
+0. Make sure you have [tapLua]( https://github.com/EngineMachiner/tapLua ).
 
 ### Outfox
 
