@@ -34,7 +34,7 @@ return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
 
 4. Load bitEye's OptionRow preview window actor to a fallback's ScreenMiniMenuBackgroundChange top layer:
 ```lua 
-return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
+return Def.ActorFrame{ bitEye.spawn("OptionRow/Actor") }
 ```
 
 5. Use the inputs while on these screens.
