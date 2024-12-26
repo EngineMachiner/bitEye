@@ -43,9 +43,8 @@ return Def.ActorFrame {
 		Name="Subtitle",	Font="Common normal",
 		OnCommand=function(self)
 
-			self.defaultColor = color("#808080")
+			self.defaultColor = color("#808080")        self.formerText = "Waiting for input."
 
-			self.formerText = "Waiting for input."
 			self:y(30):diffuse( self.defaultColor ):settext( self.formerText )
 
 		end,

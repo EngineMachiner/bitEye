@@ -1,18 +1,21 @@
 
-local function isPlaying()
+local function shouldHide()
 
 	local screen = SCREENMAN:GetTopScreen()
 	local getEditState = screen.GetEditState
 
-	return getEditState and getEditState(screen) == "EditState_Playing"
-	
+	local isPlaying = getEditState and getEditState(screen) == "EditState_Playing"
+	local onMenu = screen:GetName():match("BackgroundChange")
+
+    return isPlaying or onMenu
+
 end
 
 local function logic( self, event )
 
 	local input = event.DeviceInput			local button = input.button
 
-	if not input.down or isPlaying() then return end
+	if not input.down or shouldHide() then return end
 
 	local isMoving = button:match("_up") or button:match("_down")
 	if isMoving then self.cooldown = 0 end
@@ -58,9 +61,7 @@ return Def.ActorFrame {
 
 		self:SetUpdateFunction( function()
 	
-			if isPlaying() then self:diffusealpha(0) self.isVisible = false end
-
-			update()
+			if shouldHide() then self:playcommand("Close") end;     update()
 
 		end )
 

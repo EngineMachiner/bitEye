@@ -36,11 +36,26 @@ local function inputToText(event)
 	
 end
 
-local function setChoice( resultIndex )
+local choiceKeys = { ["KP enter"] = 1, ["KP %."] = -1 }
 
-	local r = SearchBox.results							local i = resultIndex + 1
+local function setChoice(button)
 
-	if not r[i] then return end							SearchBox.currentChoice = i
+	local r = SearchBox.results        if #r < 1 then return end
+    
+    local i = SearchBox.currentChoice or 0      local key
+
+    for k,v in pairs(choiceKeys) do
+        
+        if button:match(k) then key = k     i = i + v      break end 
+    
+    end
+
+    if not SearchBox.currentChoice and key == "KP enter" then i = #r end
+    
+    i = i % #r          if not key then SearchBox.currentChoice = nil return end
+
+    SearchBox.currentChoice = i         i = i + 1
+
 	
 	local pn = 'PlayerNumber_P1'	-- Main player.
 	local screen = SCREENMAN:GetTopScreen()
@@ -68,16 +83,6 @@ local function showAction(button)
 
 end
 
-local function checkChoice(button)
-
-	local r = SearchBox.results
-	local i = SearchBox.currentChoice
-
-	if button:match("KP enter") or button:match("KP %.") then setChoice(i)
-	else SearchBox.currentChoice = 0 end
-
-end
-
 local function logic(event)
 
 	local input = event.DeviceInput			local button = input.button
@@ -86,7 +91,9 @@ local function logic(event)
 	local isReleased = event.type:match("Release")
 
 	if input.down and isFirstPressed then
-		showAction(button)		checkChoice(button)
+
+		showAction(button)		setChoice(button)
+
 	end
 
 	-- Uppercase.
@@ -100,32 +107,33 @@ return Def.ActorFrame {
 
 	Name="Search Box", 			loadfile( bitEye.Path .. "OptionRow/SearchBox/Elements.lua" )(),
 
-	OpenBoxCommand=function(self)
-		redirectInput(true)		self:stoptweening():linear(0.25):diffusealpha(1)
-	end,
+	OpenBoxCommand=function(self) redirectInput(true)		self:tweenAlpha(1) end,
 
 	CloseBoxCommand=function(self)
-		redirectInput(false)	self:stoptweening():linear(0.25):diffusealpha(0)
+
+		redirectInput(false)	self:tweenAlpha(0)
+
 		if self.isVisible then self.isVisible = false end
+
 	end,
 
 	InitCommand=function(self)
 
-		SearchBox = self
-
-		self.currentChoice = 0		self.input = ''
-
-		self:diffusealpha(0):zoom( SCREEN_HEIGHT / 720 )
+		SearchBox = self;           self:diffusealpha(0):zoom( SCREEN_HEIGHT / 720 )
 
 		-- Two theme scale offsets. One here and one in Elements.lua in the first quad function.
+
+        self.tweenAlpha = function( self, alpha ) self:stoptweening():linear(0.25):diffusealpha(alpha) end
+
+        self.clear = function(self) self.results = {}		self.input = ''     return self	end
 
 	end,
 
 	OnCommand=function(self)
 
-		local screen = SCREENMAN:GetTopScreen()		local p = self:GetParent():GetParent()
-		
-		self:playcommand("ChangeRowMessage")
+        self:clear():playcommand("ChangeRowMessage")
+
+		local screen = SCREENMAN:GetTopScreen()
 
 		screen:AddInputCallback(inputToText)	screen:AddInputCallback(logic)
 
@@ -133,9 +141,7 @@ return Def.ActorFrame {
 
 	ChangeRowMessageCommand=function(self)
 
-		SearchBox.results = {}		SearchBox.input = ''		
-		
-		SearchBox:GetChild(''):GetChild("Subtitle"):playcommand("Init")
+        self:clear():GetChild(''):GetChild("Subtitle"):playcommand("Init")
 
 		local pn = 'PlayerNumber_P1'
 		local screen = SCREENMAN:GetTopScreen()
@@ -150,7 +156,7 @@ return Def.ActorFrame {
 		local onlyDirectories = FILEMAN:GetDirListing( path, true, false )
 		local onlyFiles = tapLua.OutFox.FILEMAN.getFilesBy( onlyDirectories, { "%.png", "%.avi" }, false )
 
-		local charLimit = SearchBox.charLimit
+		local charLimit = self.charLimit
 		local data = {
 			{ isCustomScript, onlyDirs, 1 },
 			{ isCustomContent, onlyFiles, 1 },
@@ -158,17 +164,15 @@ return Def.ActorFrame {
 			{ isRM, FILEMAN:GetDirListing("/RandomMovies/"), charLimit }
 		}
 
-		SearchBox.directory = false
+		self.directory = false
 
 		for _, pair in ipairs(data) do
 
-			if pair[1] then
-				SearchBox.directory = pair[2]		SearchBox.charLimit = pair[3]		break
-			end
+			if pair[1] then self.directory = pair[2]		self.charLimit = pair[3] break end
 			
 		end
 
-		SearchBox.directory = SearchBox.directory or {}
+		self.directory = self.directory or {}
 
 	end
 

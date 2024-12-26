@@ -20,14 +20,7 @@ local function onChangeRow(self)
 
 end
 
-local function refreshEditNoteField(self)
-
-	-- In case the user doesn't use the EditNoteField preview.
-	local window = bitEye.EditNoteField			if not window then return end
-	
-	window.cooldown = window.limit				window:sleep(0.5):queuecommand("Load")
-
-end
+local function closeAll(self) self:playcommand("Close") end
 
 local function logic( self, event )
 
@@ -66,7 +59,7 @@ return Def.ActorFrame {
 
 	Name="bitEye OptionRow",	loadfile( bitEye.Path .. "OptionRow/Elements.lua" )(),
 
-	OffCommand=refreshEditNoteField,	CancelCommand=refreshEditNoteField,
+	OffCommand=closeAll,	CancelCommand=closeAll,
 
 	ChangeRowMessageCommand=onChangeRow,	MenuLeftP1MessageCommand=onChangeRow,
 	MenuRightP1MessageCommand=onChangeRow,
