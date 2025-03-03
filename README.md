@@ -68,6 +68,17 @@ Be aware that to successfully install bitEye in your game build, it's important 
 - The search box accepts input and performs a search based on it.
   - You can navigate through the results using the **arrow keys**.
 
+---
+
+Remember, if you're having problems with the texture being white, not showing up 
+and you're using legacy builds you should enable only OpenGL as renderer in 
+your `Preferences.ini` due to D3D not being able to render textures in these builds.
+```
+VideoRenderers=opengl
+```
+
+---
+
 ## Credits
 
 - [TeamRizu](https://github.com/TeamRizu)
