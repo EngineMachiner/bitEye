@@ -1,56 +1,78 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W32691S)
 
 # bitEye
-bitEye is a library and tool to preview RandomMovies and BGAnimations when creating simfiles or charts in OutFox and StepMania 5+.
 
-bitEye has been tested through from StepMania 5.0.12 to 5.3 / OutFox.
+**bitEye** is a tool, a set of actors to **preview animations and images in-game** designed for simfile creators using **[StepMania 5](https://github.com/stepmania/stepmania) or [OutFox](https://github.com/TeamRizu/OutFox)**.
+
+This simplifies the process of creating background changes (BGChanges) for the simfiles.
+
+**bitEye** focuses to be compatible with newer game builds, so it may not be compatible with older versions.
+
+## Features
+
+- An actor for the editor's notefield.
+
+- An actor for the background changes menu.
+    - This actor includes a search box to browse through search results.
 
 https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-8ab4-c883ab724bf8.mp4
 
-## How to use
+## Usage
 
-0. Make sure you have [tapLua]( https://github.com/EngineMachiner/tapLua ).
+Be aware that to successfully install bitEye in your game build, it's important to have a basic understanding of **scripting and theme structure**.
 
-### Outfox
-
-1. Copy the bitEye folder to fallback Modules folder.
-2. Load the tapLua and bitEye module using LoadModule() on the initial fallback screen.
-
-   For example the ScreenInit overlay script should look like this using LoadModule(): <br><br>
-   <img src=https://github.com/EngineMachiner/bitEye/assets/15896027/53af2402-f49d-46e2-8a46-f46d68b3ed37 width=400>
-   <br><br>
-
-### StepMania
-
-1. Copy the bitEye folder in your "Stepmania/Scripts" folder.
-2. Reload scripts once at first screen if something goes wrong.
+  1. Use [tapLua](https://github.com/EngineMachiner/tapLua).
 
 ---
 
-3. Load bitEye's EditNoteField preview window actor to a fallback's ScreenEdit top layer:
-```lua 
-return Def.ActorFrame{ bitEye.spawn("EditNoteField/Actor") }
-```
+### Outfox
 
-4. Load bitEye's OptionRow preview window actor to a fallback's ScreenMiniMenuBackgroundChange top layer:
-```lua 
-return Def.ActorFrame{ bitEye.spawn("OptionRow/Actor") }
-```
+  2. Clone the repository in the fallback's Modules folder.
+  3. Load tapLua first and then load bitEye just once through a script.
+  ```lua
+    LoadModule("tapLua/tapLua.lua")
+    LoadModule("bitEye/bitEye.lua")
+  ```
 
-5. Use the inputs while on these screens.
+### Legacy
+
+  2. Clone the repository in the same Modules folder following the same steps for tapLua cloning.
+  3. Load tapLua first and then load bitEye just once through a script.
+  ```lua
+    dofile("Modules/tapLua/tapLua.lua")
+    LoadModule("bitEye/bitEye.lua")
+  ```
+
+---
+
+   4. Add the actors to each screen (top layer) so they can be loaded:
+   ```lua
+   bitEye.actor("OptionRow") -- ScreenMiniMenuBackgroundChange
+   bitEye.actor("EditNoteField") -- ScreenEdit
+   ```
+
+   5. Use the [inputs](#Inputs) to interact with it.
+
+---
 
 ## Inputs
-* The **Left Alt** key shows and hides the preview on both screens.
 
-#### ScreenMiniMenuBackgroundChange
-* The **Left Ctrl** key opens the search box. 
-* Write the keywords while focusing the search box and switch the option row between results by using the **DOT** and **ENTER** keys. **Only available on OutFox.**
+- **LEFT ALT:** toggles the visibility of the preview.
 
-* The **Right Ctrl** key zooms in and out the preview.
+### OptionRow Actor
+
+- **LEFT CTRL:** toggles the visibility of the search box.
+
+- **RIGHT CTRL** key zooms in and out the preview.
+
+- The search box accepts input and performs a search based on it.
+  - You can navigate through the results using the **arrow keys**.
 
 ## Credits
-- Project Moondance developers
-- Inori
-- leadbman
-- Accelerator
 
+- [TeamRizu](https://github.com/TeamRizu)
+- [Inori](https://github.com/Inorizushi)
+- [leadbman](https://github.com/leadbman)
+- [Accelerator](https://github.com/RhythmLunatic)
+
+Thank you to everyone who contributed to the development of this project!
