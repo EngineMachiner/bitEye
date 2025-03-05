@@ -13,6 +13,6 @@ bitEye.Config = {
 
     -- The OptionRow preview is at the center top when { x = 0, y = 0 }
 
-    OptionRow = { Pos = { x = 0, y = 0 }, ZoomOut = 0.25 }
+    OptionRow = { Pos = { x = 0, y = 0 }, ZoomIn = 0.25 }
     
 }

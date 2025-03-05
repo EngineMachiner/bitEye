@@ -1,6 +1,12 @@
 
 local scale = SCREEN_HEIGHT / 720
 
+local function setZoom( self, zoom )
+    
+    self:zoom( zoom * scale )      return self 
+
+end
+
 
 local OptionRow, SearchBox
 
@@ -141,21 +147,23 @@ return Def.ActorFrame {
 
     Def.ActorFrame {
 
-        InitCommand=function(self) 
-            
-            local zoom = Config.ZoomOut        self.ZoomOut = zoom
+        InitCommand=function(self)
+
+            self.setZoom = setZoom
+
+            local zoom = Config.ZoomIn        self.ZoomIn = zoom
 
             self:setsize( SCREEN_WIDTH, SCREEN_HEIGHT )
 
-            self:zoom(zoom):queuecommand("Pos")
+            self:setZoom(zoom):queuecommand("Pos")
         
         end,
 
         PosCommand=function(self)
 
-            local h = self:GetZoomedHeight()        local pos = Config.Pos
+            local h = self:GetZoomedHeight()            local pos = Config.Pos
 
-            local x = SCREEN_CENTER_X + pos.x       local y = h * 0.75 + pos.y
+            local x = SCREEN_CENTER_X + pos.x           local y = h * 0.75 + pos.y
 
             self:xy( x, y )         self.Pos = { x = x, y = y }
 
@@ -177,9 +185,9 @@ return Def.ActorFrame {
                 
                 local p = self:GetParent()
                 
-                local pos, zoom = p.Pos, p.ZoomOut
+                local pos, zoom = p.Pos, p.ZoomIn
                 
-                p:stoptweening():linear(1):zoom(zoom)
+                p:stoptweening():linear(1):setZoom(zoom)
                 
                 p:xy( pos.x, pos.y ):diffusealpha(1)
                 
@@ -190,7 +198,7 @@ return Def.ActorFrame {
 
                 local p = self:GetParent()
 
-                p:stoptweening():linear(1):zoom(0.75)
+                p:stoptweening():linear(1):setZoom(0.75)
 
                 p:Center():diffusealpha( 0.375 )
 

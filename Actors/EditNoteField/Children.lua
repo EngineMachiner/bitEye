@@ -9,9 +9,6 @@ local config = bitEye.Config.EditNoteField
 local path = bitEye.Path .. "Actors/"
 
 
-local scale = SCREEN_HEIGHT / 720
-
-
 local EditNoteField
 
 local directories = { "/BGAnimations/", "/RandomMovies/" }
@@ -119,7 +116,7 @@ return Def.ActorFrame {
 
     Def.ActorFrame{
 
-        InitCommand=function(self) self:zoom( scale * 0.25 ) end,
+        InitCommand=function(self) self:zoom(0.25) end,
 
         OnCommand=function(self)
 
@@ -132,9 +129,9 @@ return Def.ActorFrame {
     
                 local pos = config.Pos
 
-                local x = pos.x * scale         local y = pos.y * scale
+                local x = NoteField:GetX() + pos.x          local y = NoteField:GetY() + pos.y
 
-                self:xy( NoteField:GetX() + x, NoteField:GetY() + y )
+                self:xy( x, y )
 
             end
 
@@ -144,11 +141,11 @@ return Def.ActorFrame {
 
         LegacyCommand=function(self)
 
-            local pos = config.Pos
+            EditNoteField:Center()          local pos = config.Pos
 
-            local x = pos.x * scale         local y = pos.y * scale
+            local x = pos.x                 local y = pos.y
 
-            self:Center():xy( self:GetX() + x, self:GetY() + y )
+            self:x( self:GetX() + x ):y( self:GetY() + y )
 
         end,
     
