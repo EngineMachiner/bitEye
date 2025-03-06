@@ -29,7 +29,7 @@ local function addInputCallbacks()
 
 end
 
-return Def.ActorFrame {
+return tapLua.actorFrame {
 
 	Name="SearchBox", 			loadfile( path .. "Children.lua" )(),
 
@@ -47,7 +47,7 @@ return Def.ActorFrame {
 
     PosCommand=function(self)
 
-        local w, h = self:GetZoomedWidth(), self:GetZoomedHeight()
+        local w, h = self:GetZoomedSize()
 
         self:x( SCREEN_WIDTH - w * 0.75 ):y( SCREEN_CENTER_Y - h )
 
