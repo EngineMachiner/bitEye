@@ -1,13 +1,4 @@
 
-local scale = SCREEN_HEIGHT / 720
-
-local function setZoom( self, zoom )
-    
-    self:zoom( zoom * scale )      return self 
-
-end
-
-
 local OptionRow, SearchBox
 
 local Config = bitEye.Config.OptionRow

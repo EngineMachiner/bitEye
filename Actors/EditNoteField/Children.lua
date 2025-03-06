@@ -143,9 +143,9 @@ return Def.ActorFrame {
 
             EditNoteField:Center()          local pos = config.Pos
 
-            local x = pos.x                 local y = pos.y
+            local x = pos.x         local y = pos.y
 
-            self:x( self:GetX() + x ):y( self:GetY() + y )
+            self:Center():x( self:GetX() + x ):y( self:GetY() + y )
 
         end,
     

@@ -29,7 +29,7 @@ local function addInputCallbacks()
 
 end
 
-return tapLua.actorFrame {
+return tapLua.ActorFrame {
 
 	Name="SearchBox", 			loadfile( path .. "Children.lua" )(),
 
