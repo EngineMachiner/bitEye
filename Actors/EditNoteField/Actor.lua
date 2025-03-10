@@ -10,9 +10,7 @@ local path, EditNoteField = bitEye.Path .. "Actors/EditNoteField/"
 
 local function isOff()
 
-	local screen = SCREENMAN:GetTopScreen()
-
-	local editState = screen.GetEditState
+	local screen = SCREENMAN:GetTopScreen()         local editState = screen.GetEditState
 
 	local isPlaying = editState and editState(screen) == "EditState_Playing"
 
@@ -29,9 +27,7 @@ local function onAction(event)
 	if not isFirstPress then return end
 
 
-    local button = event.DeviceInput.button
-
-    local isAlt = button:match("left alt")
+    local button = event.DeviceInput.button         local isAlt = button:match("left alt")
 
     local BGChanges = GAMESTATE:GetCurrentSong():GetBGChanges()
 
@@ -52,18 +48,16 @@ local buttons = { "MenuUp", "MenuDown" }
 
 local function onScroll(event)
 
-    local type = event.type
-
-    local isReleased = type:match("Release")
-
-	if not isReleased then return end
+    local type = event.type         local isReleased = type:match("Release")
+    
+    if not isReleased then return end
 
 
     local button = event.GameButton
 
     isValid = function(k) return button == buttons[k] end
 
-	local isMoving = astro.find( buttons, isValid )
+	local isMoving = astro.contains( buttons, isValid )
 
 	if isMoving then EditNoteField:playcommand("Load") end
 
@@ -80,9 +74,7 @@ local function updateFunction()
     local field = EditNoteField
 
 
-    local isVisible = field.isVisible
-
-    local isOff = isOff() and isVisible
+    local isVisible = field.isVisible       local isOff = isOff() and isVisible
 
     if isOff then field:playcommand("Close") end
 

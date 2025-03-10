@@ -27,13 +27,25 @@ local function searchBox() return main():GetChild("SearchBox") end
 
 local keys = { MenuLeft = -1,   MenuRight = 1 }
 
+local function findButton(button)
+
+    local isValid = function(k) return button:match(k) end
+
+    return find( keys, isValid ).value
+
+end
+
 local function choice(event)
 
-    local SearchBox = searchBox()           local button = event.GameButton
+    local SearchBox = searchBox()           if not SearchBox.isVisible then return end
+    
+    
+    local button = event.GameButton
 
     local i = SearchBox.choice              local r = SearchBox.results
     
-    local a = find( keys, function(k) return button:match(k) end )
+    local a = findButton(button)
+    
 
     local isValid = r and a         isValid = isValid and #r > 0
 
@@ -100,29 +112,17 @@ local function onUppercase(event)
 
     local button = event.DeviceInput.button
 
-    searchBox().capsOn = button:match("left shift")
+    local isShift = button:match("left shift")
 
-end
+    if not isShift then return end
 
-local function onPress(event)
 
     local type = event.type
-    
-    local isFirstPress = type:match("FirstPress")
 
     local isReleased = type:match("Release")
 
-    local isValid = isFirstPress or isReleased
-    
-    if not isValid then return end
-      
-    
-    onUppercase(event)
+    searchBox().capsOn = not isReleased
 
 end
 
-return function(event)
-    
-    onFirstPress(event) onPress(event)
-
-end
+return function(event) onFirstPress(event) onUppercase(event) end

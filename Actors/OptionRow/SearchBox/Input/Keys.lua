@@ -34,9 +34,9 @@ local function onSpecial(key)
     if #key <= 2 then return key end -- If it's not special return.
 
 
-    local val = find( specials, function(k) return key:match(k) end )
+    local isValid = function(k) return key:match(k) end
 
-    if not val then return '' end
+    local val = find( specials, isValid ).value           if not val then return '' end
 
     
     return special( key, val )

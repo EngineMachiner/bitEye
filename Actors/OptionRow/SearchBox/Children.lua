@@ -1,4 +1,6 @@
 
+local Vector = Astro.Vector
+
 local function searchBox()
     
     local main = bitEye.Actors.OptionRow        return main:GetChild("SearchBox")
@@ -23,16 +25,16 @@ end
 
 return Def.ActorFrame {
 
-	Def.Quad {
+	tapLua.Quad {
 
 		OnCommand=function(self)
 
-            local w, h = 240, 160       self:diffuse( Color.Black ):diffusealpha(0.5)
+            local size = Vector( 240, 160 )       self:diffuse( Color.Black ):diffusealpha(0.5)
 			
 
             local SearchBox = searchBox()       local actors = { self, SearchBox }
 
-            for i,v in ipairs(actors) do v:setsize( w, h ) end
+            for i,v in ipairs(actors) do v:setSizeVector(size) end
 
             SearchBox:playcommand("Pos")
 

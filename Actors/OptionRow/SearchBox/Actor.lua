@@ -1,6 +1,8 @@
 
 local scale = SCREEN_HEIGHT / 720
 
+local Vector = Astro.Vector
+
 
 local path = bitEye.Path .. "Actors/OptionRow/SearchBox/"
 
@@ -15,9 +17,11 @@ end
 
 local function clear(self) self.input = ''      return self end
 
+local subPath = path .. "Input/"
+
 local inputCallbacks = {
 
-    dofile( path .. "Input/Keys.lua" ),         dofile( path .. "Input/Actions.lua" )
+    dofile( subPath .. "Keys.lua" ),         dofile( subPath .. "Actions.lua" )
 
 }
 
@@ -47,25 +51,21 @@ return tapLua.ActorFrame {
 
     PosCommand=function(self)
 
-        local w, h = self:GetZoomedSize()
+        local pos = Vector( SCREEN_WIDTH, SCREEN_CENTER_Y ) - self:GetZoomedSize()
 
-        self:x( SCREEN_WIDTH - w * 0.75 ):y( SCREEN_CENTER_Y - h )
+        self:setPos(pos)
 
     end,
 
 	OpenBoxCommand=function(self)
         
-        redirectInput(true)
-
-        self:stoptweening():linear(0.25):diffusealpha(1)
+        redirectInput(true)     self:stoptweening():linear(0.25):diffusealpha(1)
     
     end,
 
 	CloseBoxCommand=function(self)
 
-		redirectInput(false)
-        
-        self:stoptweening():linear(0.25):diffusealpha(0)
+		redirectInput(false)    self:stoptweening():linear(0.25):diffusealpha(0)
 
 		if self.isVisible then self.isVisible = false end
 

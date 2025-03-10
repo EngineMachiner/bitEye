@@ -3,6 +3,8 @@
 
 local astro = Astro.Table
 
+local Actor = tapLua.Actor
+
 
 local config = bitEye.Config.EditNoteField
 
@@ -17,21 +19,18 @@ local function getPath(name)
 
     directories[3] = GAMESTATE:GetCurrentSong():GetSongDir()
 
+
+    local isFile = name:Astro():endsWith("%....")
+
+    if not isFile then name = name .. "/default.lua" end
+
+
     for i,v in ipairs(directories) do
+
+        local path = v .. name          local exists = FILEMAN:DoesFileExist(path)
         
-
-        local name = name
-
-        if not name:match("%....$") then name = "/default.lua" end
-
-
-        local path = v .. name
-
-        local exists = FILEMAN:DoesFileExist(path)
-        
-
         if exists then return path end
-    
+        
     end
 
 end
@@ -44,9 +43,7 @@ local function currentBGChange()
 
     local function isValid(k)
     
-        local current = BGChanges[k]
-
-        local next = BGChanges[ k + 1 ]
+        local current = BGChanges[k]        local next = BGChanges[ k + 1 ]
 
 
         local isBefore = next and beat < next.start_beat
@@ -62,7 +59,7 @@ local function currentBGChange()
 
     end
 
-    return astro.find( BGChanges, isValid )
+    return astro.find( BGChanges, isValid ).value
 
 end
 
@@ -70,11 +67,13 @@ return Def.ActorFrame {
 
     -- 1. Create the preview texture.
 
-    Def.ActorFrameTexture {
+    tapLua.Actor {
+
+        Class = "ActorFrameTexture",
 
         InitCommand=function(self)
 
-            self:setsize( SCREEN_WIDTH, SCREEN_HEIGHT )
+            local screenSize = tapLua.screenSize()          self:setSizeVector(screenSize)
             
             self:EnableAlphaBuffer(true):EnableDepthBuffer(true):Create()
 
@@ -82,9 +81,7 @@ return Def.ActorFrame {
 
         OnCommand=function(self)
             
-            EditNoteField = bitEye.Actors.EditNoteField
-
-            EditNoteField.Texture = self:GetTexture()
+            EditNoteField = bitEye.Actors.EditNoteField         EditNoteField.Texture = self:GetTexture()
     
             self:playcommand("Load")
     
@@ -102,11 +99,7 @@ return Def.ActorFrame {
                 if not path then EditNoteField:playcommand("Missing") return end
 
 
-                self:RemoveAllChildren()        self:AddChildFromPath(path)
-        
-                bitEye.onMediaActor(self)       self:playcommand("On")
-                
-                bitEye.setChildrenTiming(self)
+                bitEye.Load( self, path )
 
             end  
 
@@ -114,7 +107,7 @@ return Def.ActorFrame {
     
     },
 
-    Def.ActorFrame{
+    tapLua.ActorFrame {
 
         InitCommand=function(self) self:zoom(0.25) end,
 
@@ -124,14 +117,12 @@ return Def.ActorFrame {
 
             if not NoteField then self:playcommand("Legacy") return end
 
+            Actor.extend( NoteField )
+
 
             local function update()
-    
-                local pos = config.Pos
 
-                local x = NoteField:GetX() + pos.x          local y = NoteField:GetY() + pos.y
-
-                self:xy( x, y )
+                local pos = NoteField:GetPos() + config.Pos         self:setPos(pos)
 
             end
 
@@ -141,12 +132,10 @@ return Def.ActorFrame {
 
         LegacyCommand=function(self)
 
-            EditNoteField:Center()          local pos = config.Pos
+            EditNoteField:Center()          local pos = self:GetPos() + config.Pos
 
-            local x = pos.x                 local y = pos.y
-
-            self:x( self:GetX() + x ):y( self:GetY() + y )
-
+            self:setPos(pos)
+            
         end,
     
         loadfile( path .. "Background.lua" )(),
@@ -157,13 +146,13 @@ return Def.ActorFrame {
     
                 local texture = EditNoteField.Texture
 
-                self:SetTextureFiltering(false):SetTexture( texture )
+                self:SetTextureFiltering(false):SetTexture(texture)
                     
             end
             
         },
     
-        loadfile( path .. "Missing.lua" )(),        loadfile( path .. "Overlay.lua" )()
+        loadfile( path .. "Overlay.lua" )(),            loadfile( path .. "Missing.lua" )()
     
     }
     

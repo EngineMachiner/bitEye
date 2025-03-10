@@ -1,4 +1,7 @@
 
+local Vector = Astro.Vector
+
+
 local scale = SCREEN_HEIGHT / 720
 
 local function setZoom( self, zoom )
@@ -100,11 +103,13 @@ return Def.ActorFrame {
 
     -- 1. Create the preview texture.
 
-    Def.ActorFrameTexture { 
+    tapLua.Actor { 
+
+        Class = "ActorFrameTexture",
 
         InitCommand=function(self)
 
-            self:setsize( SCREEN_WIDTH, SCREEN_HEIGHT )
+            local screenSize = tapLua.screenSize()          self:setSizeVector(screenSize)
             
             self:EnableAlphaBuffer(true):EnableDepthBuffer(true):Create()
 
@@ -112,9 +117,7 @@ return Def.ActorFrame {
 
         OnCommand=function(self)
 
-            OptionRow = bitEye.Actors.OptionRow
-
-            OptionRow.Texture = self:GetTexture()
+            OptionRow = bitEye.Actors.OptionRow         OptionRow.Texture = self:GetTexture()
 
             SearchBox = OptionRow:GetChild("SearchBox")
 
@@ -128,14 +131,7 @@ return Def.ActorFrame {
                 
                 for i,v in ipairs(functions) do path = path or v() end
 
-                if not path then return end
-
-
-                self:RemoveAllChildren()        self:AddChildFromPath(path)
-
-                bitEye.onMediaActor(self)       self:playcommand("On")
-                
-                bitEye.setChildrenTiming(self)
+                if not path then return end         bitEye.Load( self, path )
 
             end
 
@@ -145,7 +141,7 @@ return Def.ActorFrame {
 
     -- 2. Elements and texture.
 
-    Def.ActorFrame {
+    tapLua.ActorFrame {
 
         InitCommand=function(self)
 
@@ -153,7 +149,7 @@ return Def.ActorFrame {
 
             local zoom = Config.ZoomIn        self.ZoomIn = zoom
 
-            self:setsize( SCREEN_WIDTH, SCREEN_HEIGHT )
+            self:setSizeVector( tapLua.screenSize() )
 
             self:setZoom(zoom):queuecommand("Pos")
         
@@ -161,11 +157,11 @@ return Def.ActorFrame {
 
         PosCommand=function(self)
 
-            local h = self:GetZoomedHeight()            local pos = Config.Pos
+            local h = self:GetZoomedHeight()
 
-            local x = SCREEN_CENTER_X + pos.x           local y = h * 0.75 + pos.y
+            local pos = Vector( SCREEN_CENTER_X, h * 0.75 ) + Config.Pos
 
-            self:xy( x, y )         self.Pos = { x = x, y = y }
+            self:setPos(pos)         self.Pos = pos
 
         end,
 
@@ -183,22 +179,16 @@ return Def.ActorFrame {
 
             ZoomInCommand=function(self)
                 
-                local p = self:GetParent()
+                local p = self:GetParent()          local pos, zoom = p.Pos, p.ZoomIn
                 
-                local pos, zoom = p.Pos, p.ZoomIn
-                
-                p:stoptweening():linear(1):setZoom(zoom)
-                
-                p:xy( pos.x, pos.y ):diffusealpha(1)
+                p:stoptweening():linear(1):setZoom(zoom)        p:setPos(pos):diffusealpha(1)
                 
             
             end,
 
             ZoomOutCommand=function(self)
 
-                local p = self:GetParent()
-
-                p:stoptweening():linear(1):setZoom(0.75)
+                local p = self:GetParent()      p:stoptweening():linear(1):setZoom(0.75)
 
                 p:Center():diffusealpha( 0.375 )
 

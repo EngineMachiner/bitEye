@@ -1,9 +1,9 @@
 
-return Def.Quad {
+return tapLua.Quad {
 
     InitCommand=function(self)
 
-        self:FullScreen():xy(0,0)
+        self:setSizeVector( tapLua.screenSize() )
 
         self:diffuse( Color.Black ):fadeleft(0.25):faderight(0.25)
         

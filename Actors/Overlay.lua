@@ -5,15 +5,17 @@ local w = SCREEN_WIDTH
 
 local alpha = PREFSMAN:GetPreference("BGBrightness")
 
+local function onChildren(self)
+
+    local size = tapLua.screenSize()        self:setSizeVector(size)
+
+end
+
 return Def.ActorFrame {
 
-    InitCommand=function(self)
+    InitCommand=function(self) self:RunCommandsOnChildren(onChildren) end,
 
-        self:RunCommandsOnChildren( function(self) self:FullScreen():xy(0,0) end )
-
-    end,
-
-	Def.Quad {
+	tapLua.Quad {
 
 		InitCommand=function(self)
 
@@ -23,11 +25,11 @@ return Def.ActorFrame {
 
 	},
 
-	Def.Quad {
+	tapLua.Quad {
 
 		InitCommand=function(self)
 
-            self:x( -w ):diffuse( Color.Green ):diffusealpha(0.5)
+            self:x( - w ):diffuse( Color.Green ):diffusealpha(0.5)
             
             self:cropleft(0.75):fadeleft(0.25)
 
@@ -35,7 +37,7 @@ return Def.ActorFrame {
         
 	},
 
-	Def.Quad {
+	tapLua.Quad {
 
 		InitCommand=function(self)
 

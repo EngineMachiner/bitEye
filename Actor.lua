@@ -4,13 +4,13 @@ local tapLua = tapLua.Type
 local isSprite = tapLua.isSprite
 local isActorFrame = tapLua.isActorFrame
 
-local endsWith = Astro.String.endsWith
-
 local function actor(s)
 
     local path = bitEye.Path .. "Actors/"
     
-	if not endsWith( s, "%.lua" ) then s = s .. "/Actor.lua" end
+    local endsWith = s:Astro():endsWith("%.lua")
+
+	if not endsWith then s = s .. "/Actor.lua" end
 
     local actor = loadfile( path .. s )()       return actor
 
@@ -50,6 +50,14 @@ local function onMediaActor(self)
 
 end
 
+local function Load( self, path )
+
+    self:RemoveAllChildren()        self:AddChildFromPath(path)
+
+    onMediaActor(self)          self:playcommand("On")         setChildrenTiming(self)
+
+end
+
 -- Check if the option row position is in range.
 
 local function inRange( i, n )  return i == n or i == n + 8  end
@@ -86,12 +94,6 @@ local optionRow = {
 
 }
 
-local merge = {
-
-    actor = actor,          setTiming = setTiming,          OptionRow = optionRow,
-
-    setChildrenTiming = setChildrenTiming,          onMediaActor = onMediaActor
-
-}
+local merge = { actor = actor, OptionRow = optionRow, Load = Load }
 
 Astro.Table.merge( bitEye, merge )

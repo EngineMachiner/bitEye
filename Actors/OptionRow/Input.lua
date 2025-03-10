@@ -65,7 +65,7 @@ local function onRelease(event)
 
     isValid = function(k) return button == buttons[k] end
 
-	local isSwitching = astro.find( buttons, isValid )
+	local isSwitching = astro.contains( buttons, isValid )
 
     if isSwitching then self:playcommand("Load") end
 

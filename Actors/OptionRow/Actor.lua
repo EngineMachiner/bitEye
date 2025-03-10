@@ -13,15 +13,15 @@ local currentIndex = bitEye.OptionRow.currentIndex
 local path = bitEye.Path .. "Actors/OptionRow/"
 
 
--- Could use Astro.Table.find() here but it could be too verbose.
-
 local functions, keys = {}, { "isCustom", "isBGA", "isMovie" }
 
 for i,v in ipairs(keys) do functions[v] = bitEye.OptionRow[v] end
 
 local function onRange(i)
 
-    for k,v in pairs(functions) do if v(i) then return true end end
+    local isValid = function( k, v ) return v(i) end
+
+    return Astro.Table.contains( functions, isValid )
 
 end
 
@@ -73,9 +73,7 @@ local t = Def.ActorFrame {
 
 	OnCommand=function(self)
 
-		SCREENMAN:GetTopScreen():AddInputCallback(input)
-
-        self:diffusealpha(0)
+		SCREENMAN:GetTopScreen():AddInputCallback(input)        self:diffusealpha(0)
 
 	end,
 
