@@ -117,7 +117,7 @@ return Def.ActorFrame {
 
             if not NoteField then self:playcommand("Legacy") return end
 
-            Actor.extend( NoteField )
+            NoteField.GetPos = Actor.GetPos
 
 
             local function update()
