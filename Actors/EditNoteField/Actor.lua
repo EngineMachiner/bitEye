@@ -10,13 +10,13 @@ local path, EditNoteField = bitEye.Path .. "Actors/EditNoteField/"
 
 local function isOff()
 
-	local screen = SCREENMAN:GetTopScreen()         local editState = screen.GetEditState
+	local onEditor = GAMESTATE:InStepEditor()
 
-	local isPlaying = editState and editState(screen) == "EditState_Playing"
+	local isEditScreen = SCREENMAN:GetTopScreen():GetName() == "ScreenEdit"
 
-	local onMenu = screen:GetName():match("BackgroundChange")
+    local isValid = isEditScreen and onEditor
 
-    return isPlaying or onMenu
+    return not isValid
 
 end
 
