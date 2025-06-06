@@ -66,7 +66,7 @@ local optionRow = {
 
     currentIndex = function()
         
-        return SCREENMAN:GetTopScreen():GetCurrentRowIndex("PlayerNumber_P1")
+        return SCREENMAN:GetTopScreen():GetCurrentRowIndex(PLAYER_1)
     
     end,
 

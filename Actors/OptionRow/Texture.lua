@@ -22,7 +22,7 @@ local function row(i) return SCREENMAN:GetTopScreen():GetOptionRow(i) end
 
 local function choice(row) -- Index starts at 0.
     
-    local choice = row:GetChoiceInRowWithFocus("PlayerNumber_P1") 
+    local choice = row:GetChoiceInRowWithFocus(PLAYER_1) 
 
     return tonumber(choice)
 

@@ -7,11 +7,11 @@ local Vector = Astro.Vector
 local path = bitEye.Path .. "Actors/OptionRow/SearchBox/"
 
 
+local players = PlayerNumber
+
 local function redirectInput(boolean)
 
-	local p = "PlayerNumber_P"
-
-	for i = 1, 2 do SCREENMAN:set_input_redirected( p .. i, boolean ) end
+	for i = 1, 2 do SCREENMAN:set_input_redirected( players[i], boolean ) end
 
 end
 

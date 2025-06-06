@@ -63,7 +63,7 @@ local function onRelease(event)
     
     local button = event.GameButton
 
-    isValid = function(k) return button == buttons[k] end
+    local isValid = function(k) return button == buttons[k] end
 
 	local isSwitching = astro.contains( buttons, isValid )
 

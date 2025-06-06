@@ -55,7 +55,7 @@ local function onScroll(event)
 
     local button = event.GameButton
 
-    isValid = function(k) return button == buttons[k] end
+    local isValid = function(k) return button == buttons[k] end
 
 	local isMoving = astro.contains( buttons, isValid )
 

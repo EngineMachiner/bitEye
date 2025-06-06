@@ -67,7 +67,7 @@ local function choice(event)
 	local setChoice = row.SetChoiceInRowWithFocus           if not setChoice then return end
 
 
-    i = r[i] - 1          setChoice( row, "PlayerNumber_P1", i )
+    i = r[i] - 1          setChoice( row, PLAYER_1, i )
 
 
 	-- Update and load the bitEye preview with the result.
