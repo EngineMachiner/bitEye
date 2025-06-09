@@ -1,8 +1,5 @@
 
-local astro = Astro.Table
-
-
-local self
+local astro, self = Astro.Table
 
 local function onAlt(button)
 
@@ -24,16 +21,15 @@ end
 local function onCtrl(button)
 
 	if not button:match("right ctrl") then return end
-
-    
+ 
     self.isZoomed = not self.isZoomed -- Switch!
+
+    local isZoomed = self.isZoomed
 
 
     -- These commands are in Elements.lua
-    
-    local isZoomed = self.isZoomed
 
-    local command = isZoomed and "ZoomOut" or "ZoomIn"
+    local command = isZoomed and "ZoomOut" or "ZoomIn"      
 
     self:playcommand(command)
 

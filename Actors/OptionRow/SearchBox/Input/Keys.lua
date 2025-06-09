@@ -1,9 +1,7 @@
 
 -- Returns the input callback function that reads the keys pressed to search.
 
-local find = Astro.Table.find
-
-local isFunction = Astro.Type.isFunction
+local find = Astro.Table.find               local isFunction = Astro.Type.isFunction
 
 
 local SearchBox

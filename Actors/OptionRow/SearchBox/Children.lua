@@ -1,25 +1,23 @@
 
 local Vector = Astro.Vector
 
+
+local texts = { "Waiting for input.",       "No results found." }
+
+local defaultColor = color("#808080")
+
+
 local function searchBox()
     
     local main = bitEye.Actors.OptionRow        return main:GetChild("SearchBox")
 
 end
 
-local texts = { "Waiting for input.",       "No results found." }
-
-local defaultColor = color("#808080")
-
 local function textColor()
 
-    local r = searchBox().results
+    local r = searchBox().results                   if #r == 1 then return Color.Green end
 
-    if #r == 1 then return Color.Green end
-
-    if #r > 1 then return Color.Yellow end
-
-    return Color.Orange
+    if #r > 1 then return Color.Yellow end          return Color.Orange
 
 end
 
@@ -75,11 +73,7 @@ return Def.ActorFrame {
 
         InitCommand=function(self) self:y(30) end,
 
-		ChangeRowMessageCommand=function(self)
-
-            self:diffuse( defaultColor ):settext( texts[1] )
-
-		end,
+		ChangeRowMessageCommand=function(self) self:diffuse( defaultColor ):settext( texts[1] ) end,
 
 		UpdateCommand=function(self)
 
@@ -109,9 +103,7 @@ return Def.ActorFrame {
             if #results >= 1 then text = #results .. " results." end
 
 
-            local color = textColor()
-
-			self:diffuse(color):settext(text)
+            local color = textColor()               self:diffuse(color):settext(text)
 
 		end
 

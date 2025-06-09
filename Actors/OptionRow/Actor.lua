@@ -41,29 +41,22 @@ local function onChangeRow(self)
 
 end
 
-local function close(self) self:playcommand("Close") end
 
 local input = dofile( path .. "Input.lua" )
+
+local function close(self) self:playcommand("Close") end
 
 local t = Def.ActorFrame {
 
 	Name = "bitEye_OptionRow",
 
-    OffCommand = close,   CancelCommand = close,
+    ChangeRowMessageCommand = onChangeRow,          OffCommand = close,   CancelCommand = close,
 
-    ChangeRowMessageCommand = onChangeRow,
-
-	OpenCommand=function(self) 
-
-        self:stoptweening():linear(0.25):diffusealpha(1) 
-    
-    end,
+	OpenCommand=function(self) self:stoptweening():linear(0.25):diffusealpha(1) end,
 
 	CloseCommand=function(self)
 
-        self:stoptweening():linear(0.25):diffusealpha(0)
-
-		if self.isVisible then self.isVisible = false end
+        self:stoptweening():linear(0.25):diffusealpha(0)        if self.isVisible then self.isVisible = false end
 
         self:playcommand("CloseBox")
 

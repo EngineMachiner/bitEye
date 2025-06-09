@@ -17,11 +17,7 @@ return Def.ActorFrame {
 
 	tapLua.Quad {
 
-		InitCommand=function(self)
-
-            self:diffuse( Color.Black ):diffusealpha(alpha)
-
-		end
+		InitCommand=function(self) self:diffuse( Color.Black ):diffusealpha(alpha) end
 
 	},
 

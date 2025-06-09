@@ -1,8 +1,5 @@
 
-local scale = SCREEN_HEIGHT / 720
-
-local Vector = Astro.Vector
-
+local scale = SCREEN_HEIGHT / 720           local Vector = Astro.Vector
 
 local path = bitEye.Path .. "Actors/OptionRow/SearchBox/"
 
@@ -35,7 +32,7 @@ end
 
 return tapLua.ActorFrame {
 
-	Name="SearchBox", 			loadfile( path .. "Children.lua" )(),
+	Name = "SearchBox", 			loadfile( path .. "Children.lua" )(),
 
 	InitCommand=function(self)
 

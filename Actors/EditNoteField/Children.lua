@@ -1,17 +1,8 @@
 
--- This won't work if there's files / folders with the same names.
+local astro = Astro.Table           local Actor = tapLua.Actor
 
-local astro = Astro.Table
+local config = bitEye.Config.EditNoteField          local path = bitEye.Path .. "Actors/"
 
-local Actor = tapLua.Actor
-
-
-local config = bitEye.Config.EditNoteField
-
-local path = bitEye.Path .. "Actors/"
-
-
-local EditNoteField
 
 local directories = { "/BGAnimations/", "/RandomMovies/" }
 
@@ -63,13 +54,12 @@ local function currentBGChange()
 
 end
 
+
+local EditNoteField
+
 return Def.ActorFrame {
 
-    -- 1. Create the preview texture.
-
-    tapLua.Actor {
-
-        Class = "ActorFrameTexture",
+    tapLua.ActorFrameTexture { -- Create the preview texture.
 
         InitCommand=function(self)
 

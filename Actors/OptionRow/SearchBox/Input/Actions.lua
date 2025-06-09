@@ -11,9 +11,7 @@ local find = Astro.Table.find
 
 -- Get some option row functions to shorten things a little.
 
-local optionRow = bitEye.OptionRow
-
-local currentIndex = optionRow.currentIndex
+local optionRow = bitEye.OptionRow              local currentIndex = optionRow.currentIndex
 
 local getOptionRow = optionRow.get
 

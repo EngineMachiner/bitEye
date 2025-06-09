@@ -1,8 +1,8 @@
 
 local tapLua = tapLua.Type
 
-local isSprite = tapLua.isSprite
-local isActorFrame = tapLua.isActorFrame
+local isSprite = tapLua.isSprite            local isActorFrame = tapLua.isActorFrame
+
 
 local function actor(s)
 
@@ -24,6 +24,7 @@ local function onSprite(self)
 
 end
 
+
 local setChildrenTiming
 
 local function setTiming(self)
@@ -42,6 +43,7 @@ setChildrenTiming = function(self)
 
 end
 
+
 local function onMediaActor(self)
 
     local actor = self:GetChild("")
@@ -57,6 +59,7 @@ local function Load( self, path )
     onMediaActor(self)          self:playcommand("On")         setChildrenTiming(self)
 
 end
+
 
 -- Check if the option row position is in range.
 
@@ -93,6 +96,7 @@ local optionRow = {
     end
 
 }
+
 
 local merge = { actor = actor, OptionRow = optionRow, Load = Load }
 

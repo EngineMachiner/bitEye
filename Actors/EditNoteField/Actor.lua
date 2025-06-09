@@ -1,9 +1,5 @@
 
-local astro = Astro.Table
-
-
-local scale = SCREEN_HEIGHT / 720
-
+local astro = Astro.Table           local scale = SCREEN_HEIGHT / 720
 
 local path, EditNoteField = bitEye.Path .. "Actors/EditNoteField/"
 
@@ -89,7 +85,7 @@ end
 
 return Def.ActorFrame {
 
-	Name="bitEye_EditNoteField",
+	Name = "bitEye_EditNoteField",
     
     loadfile( path .. "Children.lua" )(),
 

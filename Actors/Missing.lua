@@ -10,7 +10,7 @@ return Def.ActorFrame {
 
 		OnCommand=function(self)
 
-            self:zoom(7.5):settext("MISSING"):diffuse( Color.Red )
+            self:zoom( 7.5 ):settext("MISSING"):diffuse( Color.Red )
 
 		end
 

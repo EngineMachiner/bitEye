@@ -3,7 +3,7 @@ return tapLua.Quad {
 
     InitCommand=function(self)
 
-        self:setSizeVector( tapLua.screenSize() )
+        local size = tapLua.screenSize()        self:setSizeVector(size)
 
         self:diffuse( Color.Black ):fadeleft(0.25):faderight(0.25)
         

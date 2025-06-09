@@ -1,21 +1,9 @@
 
-local Vector = Astro.Vector
+local Vector = Astro.Vector             local scale = SCREEN_HEIGHT / 720
 
-
-local scale = SCREEN_HEIGHT / 720
-
-local function setZoom( self, zoom )
-    
-    self:zoom( zoom * scale )      return self 
-
-end
-
+local Config = bitEye.Config.OptionRow          local path = bitEye.Path .. "Actors/"
 
 local OptionRow, SearchBox
-
-local Config = bitEye.Config.OptionRow
-
-local path = bitEye.Path .. "Actors/"
 
 
 local function row(i) return SCREENMAN:GetTopScreen():GetOptionRow(i) end
@@ -47,21 +35,19 @@ local function customPath()
 
     -- Get the row title.
 
-    local title = row(i):GetChild(""):GetChild("Item"):GetText()
+    local item = row(i):GetChild(""):GetChild("Item")
 
-    local path = directory .. title
+    local title = item:GetText()            local path = directory .. title
 
     return isScript and path .. "/default.lua" or path
 
 end
 
-local function bgaPath()
+local function BGA()
 
-    local bitEye = bitEye.OptionRow
-
-    local i = OptionRow.rowIndex        local isBGA = bitEye.isBGA(i)
-
-    if not isBGA then return end
+    local bitEye = bitEye.OptionRow             local i = OptionRow.rowIndex
+    
+    local isBGA = bitEye.isBGA(i)               if not isBGA then return end
 
 
     local directories = FILEMAN:GetDirListing( "/BGAnimations/", true, true )
@@ -69,21 +55,17 @@ local function bgaPath()
     SearchBox.directory = directories
 
 
-    local row = row(i)          local choice = choice(row)
+    local row = row(i)          local choice = choice(row) + 1
     
-    local directory = directories[ choice + 1 ]
-
-    return directory .. "/default.lua"
+    local directory = directories[choice]           return directory .. "/default.lua"
 
 end
 
-local function moviePath()
+local function movie()
 
-    local bitEye = bitEye.OptionRow
-
-    local i = OptionRow.rowIndex        local isMovie = bitEye.isMovie(i)
-
-    if not isMovie then return end
+    local bitEye = bitEye.OptionRow             local i = OptionRow.rowIndex
+    
+    local isMovie = bitEye.isMovie(i)           if not isMovie then return end
 
 
     local directories = FILEMAN:GetDirListing( "/RandomMovies/", false, true )
@@ -91,21 +73,20 @@ local function moviePath()
     SearchBox.directory = directories
 
 
-    local row = row(i)          local choice = choice(row)
+    local row = row(i)          local choice = choice(row) + 1
 
-    return directories[ choice + 1 ]
+    return directories[choice]
 
 end
 
-local functions = { customPath, bgaPath, moviePath }
+
+local functions = { customPath, BGA, movie }
+
+local function setZoom( self, zoom ) self:zoom( zoom * scale )      return self end
 
 return Def.ActorFrame {
 
-    -- 1. Create the preview texture.
-
-    tapLua.Actor { 
-
-        Class = "ActorFrameTexture",
+    tapLua.ActorFrameTexture { -- Create the preview texture.
 
         InitCommand=function(self)
 
@@ -127,9 +108,7 @@ return Def.ActorFrame {
 
             LoadCommand=function(self)
 
-                local path
-                
-                for i,v in ipairs(functions) do path = path or v() end
+                local path          for i,v in ipairs(functions) do path = path or v() end
 
                 if not path then return end         bitEye.Load( self, path )
 
@@ -145,13 +124,11 @@ return Def.ActorFrame {
 
         InitCommand=function(self)
 
-            self.setZoom = setZoom
+            local size = tapLua.screenSize()        self.setZoom = setZoom
+            
+            local zoom = Config.ZoomIn          self.ZoomIn = zoom
 
-            local zoom = Config.ZoomIn        self.ZoomIn = zoom
-
-            self:setSizeVector( tapLua.screenSize() )
-
-            self:setZoom(zoom):queuecommand("Pos")
+            self:setSizeVector(size):setZoom(zoom):queuecommand("Pos")
         
         end,
 

@@ -2,9 +2,9 @@
 bitEye = { OptionRow = {}, Actors = {} }
 
 
-local path = "/Appearance/Themes/_fallback/Modules/bitEye/"
-
 local isLegacy = tapLua.isLegacy()
+
+local path = "/Appearance/Themes/_fallback/Modules/bitEye/"
 
 bitEye.Path = isLegacy and "/Modules/bitEye/" or path
 
