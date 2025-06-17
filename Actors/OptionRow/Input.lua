@@ -54,7 +54,7 @@ local function onRelease(event)
 
     local isReleased = event.type:match("Release")
 
-	if not isReleased then return end
+	if not self.isVisible or not isReleased then return end
     
     
     local button = event.GameButton
