@@ -1,5 +1,5 @@
 
-local astro = Astro.Table           local scale = SCREEN_HEIGHT / 720
+local astro = Astro.Table
 
 local path, EditNoteField = bitEye.Path .. "Actors/EditNoteField/"
 
@@ -109,7 +109,7 @@ return Def.ActorFrame {
 
         EditNoteField = self        bitEye.Actors.EditNoteField = self
         
-        self:diffusealpha(0):zoom(scale)
+        self:diffusealpha(0)
 
 
 		local screen = SCREENMAN:GetTopScreen()

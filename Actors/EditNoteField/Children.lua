@@ -1,7 +1,9 @@
 
 local astro = Astro.Table           local Actor = tapLua.Actor
 
-local config = bitEye.Config.EditNoteField          local path = bitEye.Path .. "Actors/"
+local configPos = bitEye.Config.EditNoteField.Pos          local path = bitEye.Path .. "Actors/"
+
+local scale = SCREEN_HEIGHT / 720           configPos = configPos * scale
 
 
 local directories = { "/BGAnimations/", "/RandomMovies/" }
@@ -112,7 +114,7 @@ return Def.ActorFrame {
 
             local function update()
 
-                local pos = NoteField:GetPos() + config.Pos         self:setPos(pos)
+                local pos = NoteField:GetPos() + configPos         self:setPos(pos)
 
             end
 
@@ -122,7 +124,7 @@ return Def.ActorFrame {
 
         LegacyCommand=function(self)
 
-            EditNoteField:Center()          local pos = self:GetPos() + config.Pos
+            EditNoteField:Center()          local pos = self:GetPos() + configPos
 
             self:setPos(pos)
             

@@ -1,5 +1,5 @@
 
-local Vector = Astro.Vector             local scale = SCREEN_HEIGHT / 720
+local Vector = Astro.Vector
 
 local Config = bitEye.Config.OptionRow          local path = bitEye.Path .. "Actors/"
 
@@ -82,8 +82,6 @@ end
 
 local functions = { customPath, BGA, movie }
 
-local function setZoom( self, zoom ) self:zoom( zoom * scale )      return self end
-
 return Def.ActorFrame {
 
     tapLua.ActorFrameTexture { -- Create the preview texture.
@@ -124,11 +122,11 @@ return Def.ActorFrame {
 
         InitCommand=function(self)
 
-            local size = tapLua.screenSize()        self.setZoom = setZoom
+            local size = tapLua.screenSize()
             
             local zoom = Config.ZoomIn          self.ZoomIn = zoom
 
-            self:setSizeVector(size):setZoom(zoom):queuecommand("Pos")
+            self:setSizeVector(size):zoom(zoom):queuecommand("Pos")
         
         end,
 
@@ -158,14 +156,14 @@ return Def.ActorFrame {
                 
                 local p = self:GetParent()          local pos, zoom = p.Pos, p.ZoomIn
                 
-                p:stoptweening():linear(1):setZoom(zoom)        p:setPos(pos):diffusealpha(1)
+                p:stoptweening():linear(1):zoom(zoom)        p:setPos(pos):diffusealpha(1)
                 
             
             end,
 
             ZoomOutCommand=function(self)
 
-                local p = self:GetParent()      p:stoptweening():linear(1):setZoom(0.75)
+                local p = self:GetParent()      p:stoptweening():linear(1):zoom(0.75)
 
                 p:Center():diffusealpha( 0.375 )
 
