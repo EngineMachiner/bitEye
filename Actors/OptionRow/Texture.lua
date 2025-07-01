@@ -110,7 +110,9 @@ return Def.ActorFrame {
 
                 if not path then return end         bitEye.Load( self, path )
 
-            end
+            end,
+
+            OffCommand=function(self) self:RemoveAllChildren() end
 
         }
         
@@ -119,6 +121,8 @@ return Def.ActorFrame {
     -- 2. Elements and texture.
 
     tapLua.ActorFrame {
+
+        OffCommand=function(self) self:finishtweening() end,
 
         InitCommand=function(self)
 
