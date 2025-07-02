@@ -27,7 +27,7 @@ bitEye can be installed using the next bash commands in the game directory:
 
 ```console
 curl -o bitEye.sh https://raw.githubusercontent.com/EngineMachiner/bitEye/refs/heads/master/bitEye.sh
-./bitEye.sh
+./bitEye.sh; rm bitEye.sh
 ```
 
 ---
