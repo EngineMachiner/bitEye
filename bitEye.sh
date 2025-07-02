@@ -15,7 +15,7 @@ if [ -d "$FALLBACK/$MODULES" ]; then MODULES="$FALLBACK/$MODULES"; fi
 
 REPOSITORY="https://github.com/EngineMachiner/bitEye.git"
 
-#git clone "$REPOSITORY" "$MODULES/bitEye"
+git clone "$REPOSITORY" "$MODULES/bitEye"
 
 
 # Add to init script.
