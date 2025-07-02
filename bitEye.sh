@@ -32,7 +32,7 @@ echo "Done."
 
 cat << EOF
 
-Add the actors to each screen layer so they are loaded:
+Add the actors to each screen layer:
 
 bitEye.actor("OptionRow") -- ScreenMiniMenuBackgroundChange
 bitEye.actor("EditNoteField") -- ScreenEdit
