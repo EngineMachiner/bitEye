@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-FALLBACK="Appearance/Themes/_fallback";         MODULES="Modules"
+FALLBACK="Themes/_fallback";         MODULES="Modules"
 
 if [ -d "Appearance" ]; then
 
