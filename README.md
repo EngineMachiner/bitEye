@@ -17,13 +17,23 @@ This simplifies the process of creating background changes (BGChanges) for the s
 
 https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-8ab4-c883ab724bf8.mp4
 
-## Usage
+## Installation
 
-Be aware that to successfully install bitEye in your game build, it's important to have a basic understanding of **scripting and theme structure**.
+1. Install [tapLua](https://github.com/EngineMachiner/tapLua).
 
-  1. Use [tapLua](https://github.com/EngineMachiner/tapLua).
+### Bash
+
+bitEye can be installed using the next bash commands in the game directory:
+
+```console
+curl -s https://raw.githubusercontent.com/EngineMachiner/bitEye/refs/heads/master/bitEye.sh | bash
+```
 
 ---
+
+Or it can be installed manually:
+
+Be aware that to successfully install bitEye in your game build, it's important to have a basic understanding of **scripting and theme structure**.
 
 ### Outfox
 
