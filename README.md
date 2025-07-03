@@ -19,16 +19,16 @@ https://user-images.githubusercontent.com/15896027/213898537-2c43ed29-0e4f-40b9-
 
 ## Installation
 
-1. Install [tapLua](https://github.com/EngineMachiner/tapLua).
+  1. Install [tapLua](https://github.com/EngineMachiner/tapLua).
 
-### Bash
+### Linux
 
-bitEye can be installed using the next bash commands in the game directory:
+  2. Run the next commands in the game directory:
 
-```console
-curl -o bitEye.sh https://raw.githubusercontent.com/EngineMachiner/bitEye/refs/heads/master/bitEye.sh
-./bitEye.sh; rm bitEye.sh
-```
+  ```console
+  curl -o bitEye.sh https://raw.githubusercontent.com/EngineMachiner/bitEye/refs/heads/master/bitEye.sh
+  ./bitEye.sh; rm bitEye.sh
+  ```
 
 ---
 
@@ -36,30 +36,16 @@ Or it can be installed manually:
 
 Be aware that to successfully install bitEye in your game build, it's important to have a basic understanding of **scripting and theme structure**.
 
-### Outfox
-
-  2. Clone the repository in the fallback's Modules folder.
-  3. Load tapLua first and then load bitEye just once through a script.
+  2. Clone the repository in the modules folder.
+  3. Load it after tapLua.
   ```lua
-    LoadModule("tapLua/tapLua.lua")
-    LoadModule("bitEye/bitEye.lua")
+    LoadModule("bitEye/bitEye.lua") -- After loading tapLua...
   ```
 
-### Legacy
-
-  2. Clone the repository in the same Modules folder following the same steps for tapLua cloning.
-  3. Load tapLua first and then load bitEye just once through a script.
-  ```lua
-    dofile("Modules/tapLua/tapLua.lua")
-    LoadModule("bitEye/bitEye.lua")
-  ```
-
----
-
-   4. Add the actors to each screen (top layer) so they can be loaded:
+   4. Load the actors to each screen top layer:
    ```lua
-   bitEye.actor("OptionRow") -- ScreenMiniMenuBackgroundChange
-   bitEye.actor("EditNoteField") -- ScreenEdit
+   bitEye.actor("OptionRow") -- ScreenMiniMenuBackgroundChange overlay.lua
+   bitEye.actor("EditNoteField") -- ScreenEdit overlay.lua
    ```
 
    5. Use the [inputs](#Inputs) to interact with it.
