@@ -34,8 +34,8 @@ cat << EOF
 
 Add the actors to each screen layer:
 
-bitEye.actor("OptionRow") -- ScreenMiniMenuBackgroundChange
-bitEye.actor("EditNoteField") -- ScreenEdit
+bitEye.actor(\"OptionRow\") -- ScreenMiniMenuBackgroundChange
+bitEye.actor(\"EditNoteField\") -- ScreenEdit
 
 EOF
 
